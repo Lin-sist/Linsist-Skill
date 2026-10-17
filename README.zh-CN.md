@@ -111,7 +111,7 @@ python scripts/init_workspace.py
 
 ### 2. 将技能安装至各主流客户端环境
 
-Linsist 严格遵循开放 Agent Skills 规范，可无缝安装至 Claude Code、OpenAI Codex / Operator、Cursor、Windsurf 以及各类通用 Agent 环境：
+Linsist 严格遵循开放 Agent Skills 规范，可无缝安装至 Claude Code、OpenAI Codex / Operator、Cursor、Windsurf、OpenCodeInterpreter 以及各类通用 Agent 环境：
 
 #### 📦 Claude Code (`~/.claude/skills/` 或工程根目录 `.claude/skills/`)
 - **macOS / Linux**:
@@ -157,7 +157,7 @@ Linsist 严格遵循开放 Agent Skills 规范，可无缝安装至 Claude Code�
   Copy-Item -Recurse -Force skills\* "$HOME\.codeium\windsurf\skills\"
   ```
 
-#### 📦 Antigravity / Gemini CLI / 标准 Agent 规范 (`~/.agents/skills/`)
+#### 📦 OpenCodeInterpreter / Antigravity / Gemini CLI / 标准 Agent 规范 (`~/.agents/skills/`)
 - **macOS / Linux**:
   ```bash
   mkdir -p ~/.agents/skills && cp -r skills/* ~/.agents/skills/

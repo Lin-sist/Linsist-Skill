@@ -295,6 +295,83 @@ class TestScanRetest(unittest.TestCase):
         self.assertTrue(items_mastered[0].is_passed())
         self.assertFalse(items_mastered[0].is_due())
 
+    def test_records_template_format_parsing(self):
+        """Test scanning notes created in exact format of records-template.md."""
+        note_content = """# [2026-10-10] Native Function Calling
+- **当日核心主题**：Native Function Calling 协议与反序列化
+- **48h / 168h 间隔复测题（闭卷）**：
+  - 第 1 轮建议复测日期 (48h)：`2026-10-12`
+  - 第 2 轮建议复测日期 (168h)：`2026-10-19`
+  - 题目 1（概念机制）：脱稿解释 Native Function Calling
+  - 题目 2（边界/代码）：手写参数校验逻辑
+  - 复测状态：待复测
+"""
+        note_path = self.notes_dir / "official_template_note.md"
+        note_path.write_text(note_content, encoding="utf-8")
+
+        items = scan_retest.scan_workspace(self.test_dir)
+        self.assertEqual(len(items), 4)
+
+        # 2 questions * 2 stages
+        s1_items = [it for it in items if it.stage == 1]
+        s2_items = [it for it in items if it.stage == 2]
+        self.assertEqual(len(s1_items), 2)
+        self.assertEqual(len(s2_items), 2)
+
+        for it in s1_items:
+            self.assertEqual(it.due_date, "2026-10-12")
+            self.assertEqual(it.status, "待复测")
+            self.assertFalse(it.is_passed())
+
+        for it in s2_items:
+            self.assertEqual(it.due_date, "2026-10-19")
+            self.assertIn("待第1轮通过", it.status)
+            self.assertFalse(it.is_due())
+
+    def test_two_stage_status_variations_and_general_passed(self):
+        """Test spaces, Chinese punctuation, and general passed status in 2-stage workflow."""
+        note_content_spaced = """# [2026-10-10] Shared Deadline Budget
+- **当日核心主题**：全局共享超时预算
+- **48h / 168h 间隔复测题（闭卷）**：
+  - 第 1 轮建议复测日期 (48h)：`2026-10-12`
+  - 第 2 轮建议复测日期 (168h)：`2026-10-19`
+  - 题目 1：脱稿解释超时预算拦截机制
+  - 复测状态：第 1 轮已通过
+"""
+        note_path = self.notes_dir / "deadline_budget.md"
+        note_path.write_text(note_content_spaced, encoding="utf-8")
+
+        items = scan_retest.scan_workspace(self.test_dir)
+        self.assertEqual(len(items), 2)
+        s1 = next(it for it in items if it.stage == 1)
+        s2 = next(it for it in items if it.stage == 2)
+        self.assertTrue(s1.is_passed())
+        self.assertFalse(s2.is_passed())
+        self.assertEqual(s2.status, "待第2轮复测 (168h)")
+
+        # Test full-width Chinese parens
+        note_path.write_text(note_content_spaced.replace("第 1 轮已通过", "已通过（48h）"), encoding="utf-8")
+        items_parens = scan_retest.scan_workspace(self.test_dir)
+        s1_p = next(it for it in items_parens if it.stage == 1)
+        s2_p = next(it for it in items_parens if it.stage == 2)
+        self.assertTrue(s1_p.is_passed())
+        self.assertEqual(s2_p.status, "待第2轮复测 (168h)")
+
+        # Test general 已通过 on 2-stage note automatically promoting Stage 2
+        note_path.write_text(note_content_spaced.replace("第 1 轮已通过", "已通过"), encoding="utf-8")
+        items_gen = scan_retest.scan_workspace(self.test_dir)
+        s1_g = next(it for it in items_gen if it.stage == 1)
+        s2_g = next(it for it in items_gen if it.stage == 2)
+        self.assertTrue(s1_g.is_passed())
+        self.assertEqual(s2_g.status, "待第2轮复测 (168h)")
+
+        # Test mastered with space and Chinese tag
+        note_path.write_text(note_content_spaced.replace("第 1 轮已通过", "已完全掌握"), encoding="utf-8")
+        items_mast = scan_retest.scan_workspace(self.test_dir)
+        self.assertEqual(len(items_mast), 1)
+        self.assertEqual(items_mast[0].stage, 2)
+        self.assertTrue(items_mast[0].is_passed())
+
 
 class TestRepositorySanity(unittest.TestCase):
     def test_no_pii_in_tracked_files(self):
@@ -426,7 +503,7 @@ class TestRepositorySanity(unittest.TestCase):
         readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
         readme_zh = (REPO_ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
 
-        clients = ["Claude Code", "Codex", "Cursor", "Windsurf"]
+        clients = ["Claude Code", "Codex", "Cursor", "Windsurf", "OpenCodeInterpreter"]
         for client in clients:
             self.assertIn(client, readme_en, f"Missing {client} in README.md")
             self.assertIn(client, readme_zh, f"Missing {client} in README.zh-CN.md")

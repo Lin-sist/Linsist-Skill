@@ -19,24 +19,24 @@ from pathlib import Path
 RE_HEADING_TITLE = re.compile(r"^#\s+(?:\[[\d\-/.]+\]\s*)?(.+)$", re.MULTILINE)
 RE_THEME_LINE = re.compile(r"-\s*\*{0,2}(?:当日核心主题|核心主题|学习主题|主题名称|主题)\*{0,2}[：:]\s*(.+)$", re.MULTILINE)
 RE_RETEST_DATE = re.compile(
-    r"(?:\*{0,2}(?:第[1一]轮(?:建议)?(?:复测)?日期|首轮(?:建议)?(?:复测)?日期|48h(?:建议)?(?:复测)?日期|建议(?:复测)?日期|复测日期|到期日期|到期日)\*{0,2})\s*[：:]\s*`?([0-9]{2,4}[-/.年][0-9]{1,2}[-/.月][0-9]{1,2}日?)`?",
+    r"(?:\*{0,2}(?:第\s*[1一]\s*轮(?:\s*[(（]48h[)）])?\s*(?:建议)?(?:复测)?日期|第\s*[1一]\s*轮\s*(?:建议)?(?:复测)?日期(?:\s*[(（]48h[)）])?|首轮(?:\s*[(（]48h[)）])?\s*(?:建议)?(?:复测)?日期|48h\s*(?:\s*[(（](?:首轮|初测)[)）])?\s*(?:建议)?(?:复测)?日期|建议(?:复测)?日期(?:\s*[(（]48h[)）])?|复测日期(?:\s*[(（]48h[)）])?|到期日期|到期日)\*{0,2})\s*[：:]\s*`?([0-9]{2,4}[-/.年][0-9]{1,2}[-/.月][0-9]{1,2}日?)`?",
     re.IGNORECASE
 )
 RE_TIER2_DATE = re.compile(
-    r"(?:\*{0,2}(?:第[2二两]轮(?:建议)?(?:复测)?日期|二轮(?:建议)?(?:复测)?日期|168h(?:建议)?(?:复测)?日期|巩固(?:建议)?(?:复测)?日期)\*{0,2})\s*[：:]\s*`?([0-9]{2,4}[-/.年][0-9]{1,2}[-/.月][0-9]{1,2}日?)`?",
+    r"(?:\*{0,2}(?:第\s*[2二两]\s*轮(?:\s*[(（]168h[)）])?\s*(?:建议)?(?:复测)?日期|第\s*[2二两]\s*轮\s*(?:建议)?(?:复测)?日期(?:\s*[(（]168h[)）])?|二轮(?:\s*[(（]168h[)）])?\s*(?:建议)?(?:复测)?日期|168h\s*(?:\s*[(（](?:二轮|巩固)[)）])?\s*(?:建议)?(?:复测)?日期|巩固(?:\s*[(（]168h[)）])?\s*(?:建议)?(?:复测)?日期)\*{0,2})\s*[：:]\s*`?([0-9]{2,4}[-/.年][0-9]{1,2}[-/.月][0-9]{1,2}日?)`?",
     re.IGNORECASE
 )
 RE_INLINE_DATE = re.compile(
-    r"[(（](?:到期日|第[12一二两]轮到期日|建议(?:复测)?日期|复测日期|到期日期)[：:]\s*`?([0-9]{2,4}[-/.年][0-9]{1,2}[-/.月][0-9]{1,2}日?)`?[)）]",
+    r"[(（](?:到期日|第\s*[12一二两]\s*轮(?:到期日|日期)?|建议(?:复测)?日期|复测日期|到期日期)[：:]\s*`?([0-9]{2,4}[-/.年][0-9]{1,2}[-/.月][0-9]{1,2}日?)`?[)）]",
     re.IGNORECASE
 )
-RE_RETEST_STATUS = re.compile(r"(?:\*{0,2}(?:复测状态|验收状态|状态)\*{0,2})\s*[：:]\s*([^\s\n\r|]+)", re.IGNORECASE)
+RE_RETEST_STATUS = re.compile(r"(?:\*{0,2}(?:复测状态|验收状态|状态)\*{0,2})\s*[：:]\s*([^|\n\r]+)", re.IGNORECASE)
 RE_INLINE_STATUS = re.compile(
-    r"[\[(（【](已通过|通过|待复测|未通过|不通过|待强化|二次强化|二次巩固|重测|Passed|passed|Failed|failed|已通过第[1一]轮|第[1一]轮已通过|第[1一]轮通过|第[2二两]轮已通过|已完全掌握)[\])）】]",
+    r"[\[(（【](已通过|通过|待复测|未通过|不通过|待强化|二次强化|二次巩固|重测|Passed|passed|Failed|failed|已通过\s*第\s*[12一二两]\s*轮|第\s*[12一二两]\s*轮\s*已通过|第\s*[12一二两]\s*轮\s*通过|通过\s*[(（]\s*(?:48h|168h|首轮|二轮)\s*[)）]|已通过\s*[(（]\s*(?:48h|168h|首轮|二轮)\s*[)）]|已完全掌握|完全掌握|全部通过)[\])）】]",
     re.IGNORECASE
 )
 RE_STAGE_INDICATOR = re.compile(
-    r"(?:\*{0,2}(?:复测轮次|轮次|阶段|Stage|Tier)\*{0,2})\s*[：:]\s*(?:第?([12一二两])轮?|Tier\s*([12])|Stage\s*([12]))",
+    r"(?:\*{0,2}(?:复测轮次|轮次|阶段|Stage|Tier)\*{0,2})\s*[：:]\s*(?:第?\s*([12一二两])\s*轮?|Tier\s*([12])|Stage\s*([12]))",
     re.IGNORECASE
 )
 RE_RETEST_QUESTION = re.compile(
@@ -152,7 +152,7 @@ class RetestItem:
         negatives = ["未通过", "不通过", "未完成", "待复测", "待强化", "二次强化", "二次巩固", "重测", "failed"]
         if any(neg in status_clean for neg in negatives):
             return False
-        if any(p in status_clean for p in ["待第2轮", "待二轮", "待168h"]):
+        if re.search(r"待\s*(?:第\s*[2二两]\s*轮|二轮|168h)", status_clean):
             return False
         positives = ["已通过", "通过", "已完成", "passed", "mastered", "完全掌握"]
         return any(pos in status_clean for pos in positives)
@@ -160,7 +160,7 @@ class RetestItem:
     def is_due(self) -> bool:
         if self.is_passed():
             return False
-        if "待第1轮通过" in self.status or "待首轮通过" in self.status:
+        if re.search(r"待\s*(?:第\s*[1一]\s*轮|首轮)\s*通过", self.status):
             return False
         try:
             d = datetime.strptime(self.due_date, "%Y-%m-%d").date()
@@ -219,6 +219,7 @@ def parse_note_file(file_path: Path, workspace_root: Path, config: dict = None) 
     status_match = RE_RETEST_STATUS.search(content)
     if status_match:
         global_status = status_match.group(1).strip()
+        global_status = re.sub(r'^[<*`]+|[>*`]+$', '', global_status).strip()
 
     rel_path = file_path.relative_to(workspace_root).as_posix() if workspace_root in file_path.parents or file_path == workspace_root else file_path.as_posix()
 
@@ -246,17 +247,22 @@ def parse_note_file(file_path: Path, workspace_root: Path, config: dict = None) 
 
         # Check if status indicates Stage 1 passed, triggering Stage 2 scheduling
         is_stage1_passed = bool(re.search(
-            r"(?:已通过第[1一]轮|通过第[1一]轮|第[1一]轮已通过|第[1一]轮通过|通过\(首轮\)|通过\(48h\)|已通过\(48h\)|待第[2二两]轮复测|待二轮复测|待168h复测)",
+            r"(?:已通过\s*第\s*[1一]\s*轮|通过\s*第\s*[1一]\s*轮|第\s*[1一]\s*轮\s*已通过|第\s*[1一]\s*轮\s*通过|通过\s*[(（]\s*(?:首轮|48h)\s*[)）]|已通过\s*[(（]\s*(?:首轮|48h)\s*[)）]|48h\s*已通过|48h\s*通过|待\s*第\s*[2二两]\s*轮(?:复测)?|待\s*二轮(?:复测)?|待\s*168h(?:复测)?)",
             status_clean,
             re.IGNORECASE
         ))
 
         # Check if status indicates Stage 2 passed / fully mastered
         is_stage2_passed = bool(re.search(
-            r"(?:已通过第[2二两]轮|通过第[2二两]轮|第[2二两]轮已通过|第[2二两]轮通过|通过\(168h\)|已通过\(168h\)|已完全掌握|完全掌握|全部通过)",
+            r"(?:已通过\s*第\s*[2二两]\s*轮|通过\s*第\s*[2二两]\s*轮|第\s*[2二两]\s*轮\s*已通过|第\s*[2二两]\s*轮\s*通过|二轮\s*已通过|二轮\s*通过|通过\s*[(（]\s*(?:二轮|168h|巩固)\s*[)）]|已通过\s*[(（]\s*(?:二轮|168h|巩固)\s*[)）]|168h\s*已通过|168h\s*通过|已完全掌握|完全掌握|全部通过|双轮(?:已)?通过)",
             status_clean,
             re.IGNORECASE
         ))
+
+        # If both dates exist and status is general passed (e.g. 已通过), treat as Stage 1 passed
+        general_passed = RetestItem("", "", "", "", status_clean).is_passed()
+        if not is_stage1_passed and not is_stage2_passed and general_passed and tier2_date and item_date and tier2_date != item_date:
+            is_stage1_passed = True
 
         if is_stage1_passed:
             # Stage 1 passed record
@@ -390,7 +396,7 @@ def generate_dashboard_markdown(items: list) -> str:
 
     lines.extend([
         "",
-        "## 🟡 观察中任务 (Upcoming within 48h)",
+        "## 🟡 观察中任务 (Upcoming / 待到期)",
         "| 到期日期 | 关联主题 | 核心复测题 | 原始卡片路径 | 状态 |",
         "| :--- | :--- | :--- | :--- | :--- |",
     ])
@@ -400,7 +406,7 @@ def generate_dashboard_markdown(items: list) -> str:
             stage_str = f" [第{it.stage}轮]" if it.stage and f"{it.stage}轮" not in it.status and f"{it.stage}轮" not in it.question else ""
             lines.append(f"| {it.due_date} | {it.theme} | {it.question}{stage_str} | `{it.file_path}` | {it.status} |")
     else:
-        lines.append("| - | 暂无未来 48h 到期任务 | 保持每日学习切片推进 | - | 正常 |")
+        lines.append("| - | 暂无待到期任务 | 保持每日学习切片推进 | - | 正常 |")
 
     lines.extend([
         "",

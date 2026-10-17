@@ -110,7 +110,7 @@ This generates:
 
 ### 2. Install Skills into Your Client Environment
 
-Linsist conforms strictly to the open Agent Skills standard and is compatible with Claude Code, OpenAI Codex/Operator, Cursor, Windsurf, and standard Agent Skills runtimes.
+Linsist conforms strictly to the open Agent Skills standard and is compatible with Claude Code, OpenAI Codex/Operator, Cursor, Windsurf, OpenCodeInterpreter, and standard Agent Skills runtimes.
 
 #### 📦 Claude Code (`~/.claude/skills/` or `.claude/skills/`)
 - **macOS / Linux**:
@@ -156,7 +156,7 @@ Linsist conforms strictly to the open Agent Skills standard and is compatible wi
   Copy-Item -Recurse -Force skills\* "$HOME\.codeium\windsurf\skills\"
   ```
 
-#### 📦 Antigravity / Gemini CLI / Generic Agent Standard (`~/.agents/skills/`)
+#### 📦 OpenCodeInterpreter / Antigravity / Gemini CLI / Generic Agent Standard (`~/.agents/skills/`)
 - **macOS / Linux**:
   ```bash
   mkdir -p ~/.agents/skills && cp -r skills/* ~/.agents/skills/

@@ -1,6 +1,6 @@
 # Linsist 本地工作区配置规范 (linsist.config.example.md)
 
-> Linsist 系列 Skill 采用**纯文本 Markdown 物理持久化**机制，将每日学习卡片、代码证据、错题与 48h 复测看板保存在本地，彻底消除大语言模型跨会话无状态带来的“学完即忘”缺陷。
+> Linsist 系列 Skill 采用**纯文本 Markdown 物理持久化**机制，将每日学习卡片、代码证据、错题与 48h / 168h 双轮复测看板保存在本地，彻底消除大语言模型跨会话无状态带来的“学完即忘”缺陷。
 > 运行 `python scripts/init_workspace.py` 会自动生成 `.linsist/` 工作区并生成初始配置。
 
 ---
@@ -26,7 +26,7 @@ learner:
   profile_path: ".linsist/learner-profile.md"
   target_role: "Java Agent / Enterprise RAG Engineer"
 
-# 3. 48h 遗忘复测引擎策略
+# 3. 48h / 168h 双轮遗忘复测引擎策略
 spaced_retrieval:
   # 间隔复测周期（小时）：默认第 1 轮 48 小时 (2天)，第 2 轮 168 小时 (7天)
   interval_hours_tier1: 48
@@ -51,7 +51,7 @@ active_curriculums:
 .linsist/
 ├── config.md                 # 工作区配置
 ├── learner-profile.md        # 个人学习画像与时间预算
-├── retest_dashboard.md       # 48h 待复测错题物理看板
+├── retest_dashboard.md       # 48h / 168h 双轮待复测错题物理看板
 ├── notes/                    # 每日单点突破学习卡片 (YYYY-MM-DD_<主题>.md)
 └── mistakes/                 # 核心踩坑与反复卡点专题
 ```
