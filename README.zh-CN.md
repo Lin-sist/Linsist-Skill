@@ -1,6 +1,7 @@
 # Linsist：工业级计算机基础、Linux机制推演与 Java Agent / RAG 实战学习及模拟面试 Agent Skill 套件
 
 <p align="center">
+  <a href="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml"><img src="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
   <a href="README.md"><img src="https://img.shields.io/badge/lang-English-red.svg" alt="Language: English"></a>
   <img src="https://img.shields.io/badge/Agent_Skills-Standard_v1-green.svg" alt="Agent Skills Standard">
@@ -108,22 +109,86 @@ python scripts/init_workspace.py
 - `.linsist/retest_dashboard.md`：48h 待复测物理看板。
 - `.linsist/notes/`：存放每日学习卡片。
 
-### 2. 在 Agent 环境中启用技能
+### 2. 将技能安装至各主流客户端环境
 
-Linsist 兼容支持标准 Agent Skills 规范的各类主流客户端：
-- **Claude Desktop / Antigravity / Gemini CLI**：
-  直接将 `skills/` 下的对应目录挂载到系统 Skills 路径中即可自动识别。
-- **命令行或对话中触发**：
-  - 输入 `/study-coach` 或 `开始学习`：启动每日单点突破。
-  - 输入 `/mock-interview`：粘贴你的简历文本，开启 40 分钟高真度技术一面。
-  - 输入 `/basics-practice`：进行 15 分钟 Java 高频代码手写。
+Linsist 严格遵循开放 Agent Skills 规范，可无缝安装至 Claude Code、OpenAI Codex / Operator、Cursor、Windsurf 以及各类通用 Agent 环境：
 
-### 3. 执行 48h 间隔复测扫描
+#### 📦 Claude Code (`~/.claude/skills/` 或工程根目录 `.claude/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.claude/skills && cp -r skills/* ~/.claude/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.claude\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.claude\skills\"
+  ```
 
-随时运行扫描器，核查有哪些错题或手写任务已到达 48 小时复测窗口：
+#### 📦 OpenAI Codex / Agent Operator (`~/.codex/skills/` 或 `~/.agents/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.codex/skills && cp -r skills/* ~/.codex/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.codex\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.codex\skills\"
+  ```
+
+#### 📦 Cursor (`.cursor/skills/` 或 `~/.cursor/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p .cursor/skills && cp -r skills/* .cursor/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path ".cursor\skills"
+  Copy-Item -Recurse -Force skills\* ".cursor\skills\"
+  ```
+
+#### 📦 Windsurf (`~/.codeium/windsurf/skills/` 或 `.windsurf/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.codeium/windsurf/skills && cp -r skills/* ~/.codeium/windsurf/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.codeium\windsurf\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.codeium\windsurf\skills\"
+  ```
+
+#### 📦 Antigravity / Gemini CLI / 标准 Agent 规范 (`~/.agents/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.agents/skills && cp -r skills/* ~/.agents/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.agents\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.agents\skills\"
+  ```
+
+### 3. 会话中触发对应专精技能
+
+- **每日学习陪伴**：输入 `/study-coach`、`/linsist` 或 `开始学习`，推进今日单点切片。
+- **自适应技术一面**：输入 `/mock-interview` 并附上你的简历，开启 40 分钟高真度模拟面试与复盘。
+- **代码手写与算法**：输入 `/basics-practice`，进行 15 分钟白板手写训练。
+- **Linux 系统机理**：输入 `/os-lab`，进行命令行内核可观测性实验推演。
+- **测试用例与质量门禁**：输入 `/testlab`，实战演练断言设计与故障复现。
+
+### 4. 执行 48h / 168h 双轮遗忘复测扫描
+
+随时运行扫描器，核查有哪些错题或手写任务已到达 48 小时初测或 168 小时（7天）巩固复测窗口：
 
 ```bash
+# 标准交互式扫描并更新看板
 python scripts/scan_retest.py
+
+# 输出结构化 JSON（供脚本或 IDE 插件调用）
+python scripts/scan_retest.py --json
+
+# 仅筛选第 1 轮初测或第 2 轮巩固复测
+python scripts/scan_retest.py --stage 1
 ```
 
 扫描器将自动解析笔记卡片中的复测题目，标出逾期任务并静默更新 `.linsist/retest_dashboard.md`。

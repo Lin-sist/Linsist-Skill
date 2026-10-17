@@ -1,6 +1,7 @@
 # Linsist: Open Agent Skills for Technical Mastery & Adaptive Mock Interviews
 
 <p align="center">
+  <a href="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml"><img src="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
   <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/lang-简体中文-red.svg" alt="Language: Chinese"></a>
   <img src="https://img.shields.io/badge/Agent_Skills-Standard_v1-green.svg" alt="Agent Skills Standard">
@@ -107,22 +108,89 @@ This generates:
 - `.linsist/retest_dashboard.md`: Physical 48h spaced retrieval dashboard.
 - `.linsist/notes/`: Daily note cards storage.
 
-### 2. Trigger Skills in Your Agent Environment
+### 2. Install Skills into Your Client Environment
 
-Linsist conforms to the standard Agent Skills format and works seamlessly across AI agent platforms:
-- **Daily Study Session**: Invoke `/study-coach` to start your focused daily slice.
-- **Adaptive Mock Interview**: Invoke `/mock-interview` and paste your resume for a 40-minute deep-dive session.
-- **Hands-on Coding Drill**: Invoke `/basics-practice` for targeted whiteboard implementation.
+Linsist conforms strictly to the open Agent Skills standard and is compatible with Claude Code, OpenAI Codex/Operator, Cursor, Windsurf, and standard Agent Skills runtimes.
 
-### 3. Run the 48h Retest Scanner
+#### 📦 Claude Code (`~/.claude/skills/` or `.claude/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.claude/skills && cp -r skills/* ~/.claude/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.claude\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.claude\skills\"
+  ```
 
-Periodically scan your notes for cards that have reached their 48-hour retest deadline:
+#### 📦 OpenAI Codex / Agent Operator (`~/.codex/skills/` or `~/.agents/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.codex/skills && cp -r skills/* ~/.codex/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.codex\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.codex\skills\"
+  ```
+
+#### 📦 Cursor (`.cursor/skills/` or `~/.cursor/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p .cursor/skills && cp -r skills/* .cursor/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path ".cursor\skills"
+  Copy-Item -Recurse -Force skills\* ".cursor\skills\"
+  ```
+
+#### 📦 Windsurf (`~/.codeium/windsurf/skills/` or `.windsurf/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.codeium/windsurf/skills && cp -r skills/* ~/.codeium/windsurf/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.codeium\windsurf\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.codeium\windsurf\skills\"
+  ```
+
+#### 📦 Antigravity / Gemini CLI / Generic Agent Standard (`~/.agents/skills/`)
+- **macOS / Linux**:
+  ```bash
+  mkdir -p ~/.agents/skills && cp -r skills/* ~/.agents/skills/
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  New-Item -ItemType Directory -Force -Path "$HOME\.agents\skills"
+  Copy-Item -Recurse -Force skills\* "$HOME\.agents\skills\"
+  ```
+
+### 3. Trigger Skills in Your Agent Session
+
+- **Daily Study Session**: Invoke `/study-coach` or `/linsist` to start your daily minimal knowledge slice.
+- **Adaptive Mock Interview**: Invoke `/mock-interview` and provide your resume for a 40-minute deep-dive session.
+- **Hands-on Coding Drill**: Invoke `/basics-practice` for timed whiteboard code implementations.
+- **Linux & OS Internals**: Invoke `/os-lab` for command-line kernel observability experiments.
+- **Test-Driven Lab**: Invoke `/testlab` for JUnit 5 / Mockito failure reproduction.
+
+### 4. Run the 48h / 168h Spaced Retrieval Scanner
+
+Periodically scan your notes for cards that have reached their 48-hour initial retest or 168-hour (7-day) consolidation retest deadline:
 
 ```bash
+# Standard interactive scan & dashboard update
 python scripts/scan_retest.py
+
+# JSON output for IDE extensions or automated hooks
+python scripts/scan_retest.py --json
+
+# Filter specifically by Stage 1 (48h) or Stage 2 (168h)
+python scripts/scan_retest.py --stage 1
 ```
 
-The script automatically updates `.linsist/retest_dashboard.md` and displays overdue items.
+The script automatically syncs `.linsist/retest_dashboard.md` and displays due items across both repetition stages.
 
 ---
 

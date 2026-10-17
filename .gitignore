@@ -1,10 +1,5 @@
-# Local personal learning workspace
-.linsist/notes/
-.linsist/mistakes/
-.linsist/config.md
-.linsist/learner-profile.md
-!.linsist/notes/.gitkeep
-!.linsist/mistakes/.gitkeep
+# Local personal learning workspace (ignore entire .linsist/ runtime directory)
+.linsist/
 
 # Python artifacts
 __pycache__/

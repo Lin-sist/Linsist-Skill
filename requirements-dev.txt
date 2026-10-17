@@ -1,0 +1,2 @@
+# Linsist Development & Test Dependencies
+pyyaml>=6.0

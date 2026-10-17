@@ -37,9 +37,9 @@ active_curriculums:
 ```
 """
 
-DEFAULT_DASHBOARD_CONTENT = """# 48h 遗忘复测看板 (Retest Dashboard)
+DEFAULT_DASHBOARD_CONTENT = """# 48h / 168h 双轮遗忘复测看板 (Retest Dashboard)
 
-> 本看板由 Linsist 自动维护。日常学习卡片中的复测题目将登记在此。
+> 本看板由 Linsist 自动维护。日常学习卡片中的 48h 初测与 168h 巩固复测题目将登记在此。
 > 运行 `python scripts/scan_retest.py` 可自动从笔记中提取待复测题目并更新本看板。
 
 ## 🔴 待复测 / 逾期任务 (Due for Retest)

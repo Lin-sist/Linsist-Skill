@@ -237,6 +237,64 @@ class TestScanRetest(unittest.TestCase):
         self.assertEqual(data["passed_count"], 1)
         self.assertEqual(data["due_count"], 0)
 
+    def test_two_stage_spaced_retrieval_scheduling(self):
+        """Test Stage 1 passed status automatically schedules Stage 2 due in 7 days (168h)."""
+        seven_days_ago = (date.today() - timedelta(days=7)).strftime("%Y-%m-%d")
+        note_content = f"""# [2026-10-10] Native Function Calling
+- **当日核心主题**：Native Function Calling 协议与反序列化
+- **48h / 168h 间隔复测题（闭卷）**：
+  - 建议复测日期：`{seven_days_ago}`
+  - 题目 1：脱稿解释 Native Function Calling
+  - 复测状态：第1轮已通过
+"""
+        note_path = self.notes_dir / "function_calling_2stage.md"
+        note_path.write_text(note_content, encoding="utf-8")
+
+        items = scan_retest.scan_workspace(self.test_dir)
+        self.assertEqual(len(items), 2)
+
+        s1_item = next(it for it in items if it.stage == 1)
+        s2_item = next(it for it in items if it.stage == 2)
+
+        self.assertEqual(s1_item.due_date, seven_days_ago)
+        self.assertTrue(s1_item.is_passed())
+        self.assertFalse(s1_item.is_due())
+
+        # Stage 2 should be scheduled for today (seven_days_ago + 7 days = today)
+        self.assertEqual(s2_item.due_date, date.today().strftime("%Y-%m-%d"))
+        self.assertFalse(s2_item.is_passed())
+        self.assertTrue(s2_item.is_due())
+
+    def test_two_stage_upcoming_and_mastered(self):
+        """Test Stage 2 upcoming when scheduled in the future, and mastered when passed."""
+        two_days_ago = (date.today() - timedelta(days=2)).strftime("%Y-%m-%d")
+        note_content = f"""# [2026-10-15] BM25 稀疏检索
+- **当日核心主题**：BM25 稀疏检索原理
+- **48h / 168h 间隔复测题（闭卷）**：
+  - 建议复测日期：`{two_days_ago}`
+  - 题目 1：解释 TF、IDF 与文档长度归一化
+  - 复测状态：第1轮已通过
+"""
+        note_path = self.notes_dir / "bm25_2stage.md"
+        note_path.write_text(note_content, encoding="utf-8")
+
+        items = scan_retest.scan_workspace(self.test_dir)
+        s2_item = next(it for it in items if it.stage == 2)
+        expected_s2_date = (date.today() + timedelta(days=5)).strftime("%Y-%m-%d")
+        self.assertEqual(s2_item.due_date, expected_s2_date)
+        self.assertFalse(s2_item.is_due())
+        self.assertFalse(s2_item.is_passed())
+
+        # Now mark as fully mastered (Stage 2 passed)
+        note_content_mastered = note_content.replace("复测状态：第1轮已通过", "复测状态：第2轮已通过")
+        note_path.write_text(note_content_mastered, encoding="utf-8")
+
+        items_mastered = scan_retest.scan_workspace(self.test_dir)
+        self.assertEqual(len(items_mastered), 1)
+        self.assertEqual(items_mastered[0].stage, 2)
+        self.assertTrue(items_mastered[0].is_passed())
+        self.assertFalse(items_mastered[0].is_due())
+
 
 class TestRepositorySanity(unittest.TestCase):
     def test_no_pii_in_tracked_files(self):
@@ -297,6 +355,81 @@ class TestRepositorySanity(unittest.TestCase):
             manifest = yaml.safe_load(openai_yaml.read_text(encoding="utf-8"))
             self.assertEqual(manifest["interface"]["display_name"], sk)
             self.assertFalse(manifest["policy"]["allow_implicit_invocation"])
+
+    def test_gitignore_ignores_linsist_entirely(self):
+        """Verify .gitignore ignores .linsist/ entirely including retest_dashboard.md."""
+        gitignore_path = REPO_ROOT / ".gitignore"
+        self.assertTrue(gitignore_path.exists())
+        content = gitignore_path.read_text(encoding="utf-8")
+        self.assertIn(".linsist/", content)
+
+        # Test with git check-ignore
+        import subprocess
+        proc = subprocess.run(
+            ["git", "check-ignore", ".linsist/retest_dashboard.md"],
+            cwd=str(REPO_ROOT),
+            capture_output=True,
+            text=True
+        )
+        self.assertEqual(proc.returncode, 0, ".linsist/retest_dashboard.md is not ignored by git!")
+
+    def test_recall_precision_metric_definitions(self):
+        """Verify Recall@K and Precision@K are accurately defined and differentiated in syllabus.md."""
+        syllabus_path = REPO_ROOT / "curriculums" / "java-agent-rag" / "syllabus.md"
+        self.assertTrue(syllabus_path.exists())
+        content = syllabus_path.read_text(encoding="utf-8")
+
+        self.assertIn("Recall@K", content)
+        self.assertIn("Precision@K", content)
+        self.assertIn("MRR (Mean Reciprocal Rank)", content)
+        self.assertIn("真实相关文档总数", content)
+        self.assertIn("相关文档数 / K", content)
+
+    def test_evidence_based_pitch_constraint_enforced(self):
+        """Verify hard rule constraint for evidence-based interview pitches is present in core documents."""
+        rule_snippet = "只有用户真实项目中已经实现，并能提供代码或测试证据的技术成果，才能作为个人项目经历陈述"
+        prohibition_snippet = "严禁使用『我们实现了/建立了』的确定性第一人称经历表达"
+
+        targets = [
+            REPO_ROOT / "skills" / "linsist-coach" / "SKILL.md",
+            REPO_ROOT / "skills" / "linsist-interviewer" / "SKILL.md",
+            REPO_ROOT / "curriculums" / "java-agent-rag" / "syllabus.md",
+            REPO_ROOT / "curriculums" / "java-agent-rag" / "projects-context.md",
+        ]
+
+        for target in targets:
+            self.assertTrue(target.exists(), f"Target file does not exist: {target}")
+            content = target.read_text(encoding="utf-8")
+            self.assertIn(rule_snippet, content, f"Rule missing from {target.relative_to(REPO_ROOT)}")
+            self.assertIn(prohibition_snippet, content, f"Prohibition missing from {target.relative_to(REPO_ROOT)}")
+
+    def test_ci_workflow_and_dev_dependencies(self):
+        """Verify CI workflow, requirements-dev.txt declarations, and CI badges."""
+        ci_path = REPO_ROOT / ".github" / "workflows" / "ci.yml"
+        self.assertTrue(ci_path.exists(), "Missing .github/workflows/ci.yml")
+        import yaml
+        ci_yaml = yaml.safe_load(ci_path.read_text(encoding="utf-8"))
+        self.assertIn("jobs", ci_yaml)
+        self.assertIn("test", ci_yaml["jobs"])
+
+        req_path = REPO_ROOT / "requirements-dev.txt"
+        self.assertTrue(req_path.exists(), "Missing requirements-dev.txt")
+        self.assertIn("pyyaml", req_path.read_text(encoding="utf-8").lower())
+
+        readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+        readme_zh = (REPO_ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        self.assertIn("actions/workflows/ci.yml/badge.svg", readme_en)
+        self.assertIn("actions/workflows/ci.yml/badge.svg", readme_zh)
+
+    def test_readme_client_installation_instructions(self):
+        """Verify README contains copy-pasteable installation instructions for major Agent clients."""
+        readme_en = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+        readme_zh = (REPO_ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+
+        clients = ["Claude Code", "Codex", "Cursor", "Windsurf"]
+        for client in clients:
+            self.assertIn(client, readme_en, f"Missing {client} in README.md")
+            self.assertIn(client, readme_zh, f"Missing {client} in README.zh-CN.md")
 
 
 if __name__ == "__main__":
