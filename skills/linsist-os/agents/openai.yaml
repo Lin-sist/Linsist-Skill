@@ -1,0 +1,7 @@
+interface:
+  display_name: "linsist-os"
+  short_description: "Linsist 操作系统与 Linux 机制导师：结合 Linux 终端观测命令与 Java 后端映射，推演底层原理与 48h 闭卷复测"
+  default_prompt: "使用 $linsist-os 开始今天的操作系统机制推演与 Linux 实验，通过命令观测指标变化，讲清内核原理与 Java 后端并发/网络映射。"
+
+policy:
+  allow_implicit_invocation: false

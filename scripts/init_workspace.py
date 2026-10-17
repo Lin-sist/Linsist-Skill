@@ -51,8 +51,8 @@ DEFAULT_DASHBOARD_CONTENT = """# 48h 遗忘复测看板 (Retest Dashboard)
 | :--- | :--- | :--- | :--- | :--- |
 
 ## 🟢 已通过验收 (Passed)
-| 通过日期 | 关联主题 | 核心复测题 | 验收状态 |
-| :--- | :--- | :--- | :--- |
+| 到期日期 | 关联主题 | 核心复测题 | 原始卡片路径 | 验收状态 |
+| :--- | :--- | :--- | :--- | :--- |
 """
 
 
@@ -79,7 +79,9 @@ def init_workspace(target_root: Path):
 
     # 3. Create learner-profile.md from template
     profile_file = linsist_dir / "learner-profile.md"
-    template_file = target_root / "skills" / "linsist-coach" / "references" / "learner-profile.template.md"
+    repo_skills_template = Path(__file__).resolve().parent.parent / "skills" / "linsist-coach" / "references" / "learner-profile.template.md"
+    target_skills_template = target_root / "skills" / "linsist-coach" / "references" / "learner-profile.template.md"
+    template_file = repo_skills_template if repo_skills_template.exists() else target_skills_template
     if not profile_file.exists():
         if template_file.exists():
             template_content = template_file.read_text(encoding="utf-8")

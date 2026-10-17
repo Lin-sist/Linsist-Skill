@@ -1,0 +1,7 @@
+interface:
+  display_name: "linsist-interviewer"
+  short_description: "Linsist 自适应模拟面试官：基于候选人简历与目标 JD 进行全真自适应模拟技术一面，输出深度复盘报告"
+  default_prompt: "使用 $linsist-interviewer 根据我的简历和目标岗位进行全真自适应技术一面，严格单轮单问，探测技术天花板与工程证据，结束后交付复盘报告。"
+
+policy:
+  allow_implicit_invocation: false

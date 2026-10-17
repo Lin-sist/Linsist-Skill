@@ -1,2 +1,7 @@
+interface:
+  display_name: "linsist-coach"
+  short_description: "Linsist 个人技术学习陪伴教练中枢：编排每日最小学习切片、深挖计算机基础与 AI 实战机制、执行 48h 间隔复测与面试表达验收"
+  default_prompt: "使用 $linsist-coach 开始今天的单点突破学习，检查 48h 到期复测题目，一次聚焦一个核心知识切片并严格控制提问预算。"
+
 policy:
   allow_implicit_invocation: false

@@ -1,0 +1,7 @@
+interface:
+  display_name: "linsist-testlab"
+  short_description: "Linsist 测试实战导师：结合 JUnit 5、Mockito 与断言设计，进行故障驱动排障与质量防御"
+  default_prompt: "使用 $linsist-testlab 开始今天的测试用例分析与实战排障，按照 AAA 结构解析断言逻辑，通过真实运行与错误日志驱动学习。"
+
+policy:
+  allow_implicit_invocation: false
