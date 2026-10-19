@@ -60,6 +60,7 @@ Linsist-Skill/
 │   │   └── references/
 │   │       └── curriculums/         # Bundled Java Agent/RAG and custom packs
 │   ├── linsist-interviewer/
+│   ├── linsist-agent/                # Resume-targeted offline Agent coding drills
 │   ├── linsist-basics/
 │   ├── linsist-os/
 │   └── linsist-testlab/
@@ -78,6 +79,7 @@ Linsist-Skill/
 | :--- | :--- | :--- |
 | `$linsist-coach` | Daily study and spaced retrieval | Use Linsist to start today's study |
 | `$linsist-interviewer` | Adaptive mock interview | Use Linsist to interview me based on this resume |
+| `$linsist-agent` | Resume-targeted Agent foundations and offline coding | Practice one Agent mechanism from my resume |
 | `$linsist-basics` | Java, collections and coding drills | Start today's Java basics practice |
 | `$linsist-os` | OS mechanisms and Linux experiments | Help me learn process scheduling with a Linux experiment |
 | `$linsist-testlab` | JUnit, Mockito and test analysis | Start a JUnit boundary-test exercise |
@@ -97,7 +99,7 @@ python3 scripts/install.py
 python3 scripts/install.py --check
 ```
 
-The default destination is `~/.agents/skills`. Five `linsist-*` folders are installed directly under that root, including the coach's scripts and curriculum resources. If the source checkout is itself inside the destination skills root, the installer uses directory symlinks so Codex deduplicates the same canonical files. Otherwise it installs independent copies. On systems without symlink privileges, keep the source checkout outside the skills root. Linked installations follow local source changes.
+The default destination is `~/.agents/skills`. Six `linsist-*` folders are installed directly under that root, including the coach's scripts and curriculum resources. If the source checkout is itself inside the destination skills root, the installer uses directory symlinks so Codex deduplicates the same canonical files. Otherwise it installs independent copies. On systems without symlink privileges, keep the source checkout outside the skills root. Linked installations follow local source changes.
 
 On Windows PowerShell, use `py -3 scripts/install.py` and `py -3 scripts/install.py --check`. For a different client or project, set its supported skills root explicitly:
 
@@ -148,6 +150,24 @@ The integration test installs into a temporary skills root with spaces in the pa
 
 ---
 
+## Agent Foundations: Resume-Targeted Coding on Linux
+
+`$linsist-agent` follows the basics coach style: one concept check, a short explanation, one 10–20 minute handwritten function, actual execution, then one interview follow-up. It prioritizes Agent mechanisms in the current resume and permits one small adjacent extension, rather than turning a long-term roadmap into a mandatory syllabus.
+
+- **P0**: bounded Loop, Tool Calling, ReAct action/observation linkage, state transitions, context, time-banded memory, proposal confirmation, n-gram guardrails, one-shot reflection, and shared deadline budgets.
+- **P1**: the minimum RPC/MCP concepts, trace metadata, and offline evaluation needed for interview gaps. Framework migration, multi-agent systems, GraphRAG and fine-tuning are optional future topics.
+- Python standard library and a deterministic Fake LLM work offline with no API key. The scaffold intentionally leaves core functions empty. A fixture smoke pass is distinct from a student exercise pass; each exercise has its own acceptance contract.
+
+```text
+$linsist-agent Use my current resume to start one Agent foundations coding exercise. Do not provide the implementation before I submit code.
+```
+
+`/linsist-agent` and `/agent-practice` are recognized text trigger phrases, not automatically registered host slash commands; use `$linsist-agent` if the client intercepts unknown slash commands. The new skill can start independently; shared persistence uses the complete suite's existing `.linsist/` scanner. Personal resumes are not bundled or published.
+
+See the [syllabus](skills/linsist-agent/references/curriculums/agent-foundations/syllabus.md), [exercise contracts](skills/linsist-agent/references/curriculums/agent-foundations/exercises.md), and [project alignment notes](skills/linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md). General knowledge, synthetic experiments and verified Flashback/RAG capabilities remain separate; passing an exercise never creates resume project experience.
+
+---
+
 ## 📚 Official Curriculum: Java Controlled Agent & Enterprise RAG
 
 Linsist ships with an official flagship curriculum located in [`skills/linsist-coach/references/curriculums/java-agent-rag/`](skills/linsist-coach/references/curriculums/java-agent-rag/):
@@ -157,12 +177,12 @@ Linsist ships with an official flagship curriculum located in [`skills/linsist-c
    - Native Function Calling with strong DTO binding and tool whitelist validation
    - Human-in-the-Loop (HITL) 2-phase confirmation for destructive operations
    - Shared Deadline Budget and zero silent automatic retries
-   - Lightweight MySQL temporal memory with exponential decay
+   - MySQL metadata memory with time labels and banded character budgets
 2. **Enterprise RAG Retrieval Engineering (S11 ~ S20)**:
-   - Hybrid Retrieval: Dense Semantic (Milvus HNSW) + Sparse Keyword (BM25)
+   - Hybrid Retrieval: Dense Semantic (Milvus IVF_FLAT; HNSW as an optional comparison) + Sparse Keyword (BM25)
    - Reciprocal Rank Fusion (`RRF`) score reconciliation
-   - Cross-Encoder Deep Reranker with heuristic fallback on timeout
-   - Sentence-level `Citation Validator` for anti-hallucination guardrails
+   - Heuristic reranking by default, with optional model reranking and explicit fallback
+   - Citation snippet overlap checks, distinct from semantic entailment verification
    - Reliable Index Task Ledger with distributed `Lease Guard` heartbeats
 
 *To plug in your custom project, refer to [`skills/linsist-coach/references/curriculums/custom-template/my-project.template.md`](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md).*

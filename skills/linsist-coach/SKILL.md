@@ -73,6 +73,7 @@ flowchart TD
 当学习者进入专项或垂直模块训练时，无缝协同以下专用 Skill，不重复摸底与建档：
 
 - **通用代码手写与算法基础**：调用 [linsist-basics](../linsist-basics/SKILL.md)。
+- **简历靶向 Agent 基础与离线手写**：调用 [linsist-agent](../linsist-agent/SKILL.md)。先练一个 Loop、工具调用或预算机制；不把 Linux 基础训练扩大为 Windows 侧项目重做。
 - **Linux 机制推演与系统观测**：调用 [linsist-os](../linsist-os/SKILL.md)。
 - **真实测试断言与质量门禁**：调用 [linsist-testlab](../linsist-testlab/SKILL.md)。
 - **全真自适应模拟面试复盘**：调用 [linsist-interviewer](../linsist-interviewer/SKILL.md)。

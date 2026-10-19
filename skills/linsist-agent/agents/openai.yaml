@@ -1,0 +1,7 @@
+interface:
+  display_name: "linsist-agent"
+  short_description: "以简历为靶向的 Agent 基础训练：离线手写、三级提示、运行验收与复测"
+  default_prompt: "使用 $linsist-agent 开始今天的 Agent 基础手写训练，以我的简历为范围，一次只练一个最小机制，提交代码前不要给完整实现。"
+
+policy:
+  allow_implicit_invocation: true

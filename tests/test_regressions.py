@@ -127,7 +127,7 @@ class TestInstalledSuite(unittest.TestCase):
             workspace.mkdir()
             self.run_cli(REPO_ROOT / "scripts/install.py", "--dest", dest, cwd=workspace)
             self.run_cli(REPO_ROOT / "scripts/install.py", "--dest", dest, "--check")
-            self.assertEqual(len(list(dest.glob("*/SKILL.md"))), 5)
+            self.assertEqual(len(list(dest.glob("*/SKILL.md"))), 6)
             coach = dest / "linsist-coach"
             for md in dest.rglob("*.md"):
                 for target in re.findall(r"\[[^\]]*\]\(([^)]+)\)", md.read_text(encoding="utf-8")):

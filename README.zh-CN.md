@@ -60,6 +60,7 @@ Linsist-Skill/
 │   │   └── references/
 │   │       └── curriculums/         # Bundled Java Agent/RAG and custom packs
 │   ├── linsist-interviewer/
+│   ├── linsist-agent/                # Resume-targeted offline Agent coding drills
 │   ├── linsist-basics/
 │   ├── linsist-os/
 │   └── linsist-testlab/
@@ -78,6 +79,7 @@ Linsist-Skill/
 | :--- | :--- | :--- |
 | `$linsist-coach` | 每日学习编排、费曼验收、间隔复测 | 用 Linsist 开始今天的学习 |
 | `$linsist-interviewer` | 自适应模拟面试与统一复盘 | 用 Linsist 根据这份简历模拟技术一面 |
+| `$linsist-agent` | 简历靶向 Agent 基础与离线手写 | 按我的简历开始一次 Agent 基础手写练习 |
 | `$linsist-basics` | Java、集合、算法与手写训练 | 开始今天的 Java 基础训练 |
 | `$linsist-os` | 操作系统机制与 Linux 实验 | 通过 Linux 实验学习进程调度 |
 | `$linsist-testlab` | JUnit、Mockito 与断言分析 | 开始一次 JUnit 边界测试练习 |
@@ -97,7 +99,7 @@ python3 scripts/install.py
 python3 scripts/install.py --check
 ```
 
-默认安装到 `~/.agents/skills`，在该目录下直接生成 5 个 `linsist-*` 文件夹，并携带教练脚本与课程资源。如果源码仓库本身就在目标技能根目录内，安装器会创建目录符号链接，使 Codex 按规范化路径去重；其他情况下安装独立副本。没有符号链接权限的系统，请把源码放在技能根目录之外。链接安装会随本地源码修改同步生效。
+默认安装到 `~/.agents/skills`，在该目录下直接生成 6 个 `linsist-*` 文件夹，并携带教练脚本与课程资源。如果源码仓库本身就在目标技能根目录内，安装器会创建目录符号链接，使 Codex 按规范化路径去重；其他情况下安装独立副本。没有符号链接权限的系统，请把源码放在技能根目录之外。链接安装会随本地源码修改同步生效。
 
 Windows PowerShell 使用 `py -3 scripts/install.py` 和 `py -3 scripts/install.py --check`。其他客户端或项目可显式指定其支持的技能根目录：
 
@@ -148,6 +150,24 @@ python3 -m unittest discover tests -v
 
 ---
 
+## Agent Foundations：Linux 端简历靶向手写
+
+`$linsist-agent` 沿用基础训练风格：一次概念摸底、最少讲解、一个 10～20 分钟手写函数、实际运行，再用一个问题验收面试表达。优先当前简历出现的 Agent 机制，允许一个小拓展，不把长期路线图变成必修清单。
+
+- **P0**：有界 Loop、工具白名单、ReAct 动作/观测关联、状态迁移、上下文、分档记忆、提议确认、n-gram 护栏、单次反思与共享时间预算。
+- **P1**：按面试缺口选学 RPC/MCP 基础、trace 元数据、离线评测；框架迁移、多智能体、GraphRAG、微调均不默认安排。
+- 使用 Python 标准库和离线 Fake LLM，无需 API Key。脚手架刻意保留核心函数空实现；冒烟验证成功不等于手写题通过，每道题独立验收。
+
+```text
+$linsist-agent 按我当前简历开始一次 Agent 基础手写练习，提交代码前不要给完整实现。
+```
+
+`/linsist-agent`、`/agent-practice` 作为文本触发词；不会自动注册宿主 slash 命令。客户端拦截未知 slash 命令时请使用 `$linsist-agent`。本技能可独立开始练习，持久化复测复用完整套件已有 `.linsist/` 扫描器。私人简历不内置、不随套件公开。
+
+详见 [课程范围](skills/linsist-agent/references/curriculums/agent-foundations/syllabus.md)、[手写题输入输出契约](skills/linsist-agent/references/curriculums/agent-foundations/exercises.md)、[项目口径差异与修复](skills/linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md)。通用知识、独立实验与 Flashback/RAG 已实现能力必须分开，实验通过不自动变成简历项目经历。
+
+---
+
 ## 📚 官方精选路线：Java 原生 Agent + Enterprise RAG
 
 Linsist 内置官方首发精选路线包（位于 [`skills/linsist-coach/references/curriculums/java-agent-rag/`](skills/linsist-coach/references/curriculums/java-agent-rag/)）：
@@ -157,12 +177,12 @@ Linsist 内置官方首发精选路线包（位于 [`skills/linsist-coach/refere
    - Native Function Calling 强类型 DTO 绑定与校验白名单
    - Human-in-the-Loop (HITL) 二段式确认与挂起事务
    - 共享全局超时预算 (`Shared Deadline Budget`) 与零隐式重试
-   - 基于 MySQL 时间指数衰减 (`Temporal Decay`) 的轻量记忆库
+   - 基于 MySQL 元数据检索、时间标签与分档字符预算的轻量记忆
 2. **Enterprise RAG 检索工程核心体系 (S11 ~ S20)**：
-   - 稠密语义 (Milvus HNSW) + 稀疏关键词 (BM25) 双路召回
+   - 稠密语义 (Milvus IVF_FLAT；HNSW 仅作可选比较) + 稀疏关键词 (BM25) 双路召回
    - 倒数排名融合算法 (`RRF - Reciprocal Rank Fusion`) 数学机制
-   - Cross-Encoder 深度重排序 (Reranker) 与启发式熔断降级
-   - 句级别引用校验门禁 (`Citation Validator`) 拦截幻觉
+   - 启发式默认重排、可选模型重排与显式故障降级
+   - 引用片段重合度校验 (`CitationValidator`)，不冒充语义蕴含验证
    - 索引任务账本与分布式租约看门狗 (`Lease Guard`)
 
 *如需接入自定义业务工程，仅需参考 [`skills/linsist-coach/references/curriculums/custom-template/my-project.template.md`](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md) 进行拓展。*

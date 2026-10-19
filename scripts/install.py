@@ -9,7 +9,7 @@ import tempfile
 
 
 SOURCE = Path(__file__).resolve().parents[1] / "skills"
-SKILLS = ("linsist-coach", "linsist-interviewer", "linsist-basics", "linsist-os", "linsist-testlab")
+SKILLS = ("linsist-coach", "linsist-interviewer", "linsist-basics", "linsist-os", "linsist-testlab", "linsist-agent")
 
 
 def check_installation(destination):

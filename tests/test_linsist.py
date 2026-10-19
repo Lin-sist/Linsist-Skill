@@ -408,7 +408,7 @@ class TestRepositorySanity(unittest.TestCase):
         self.assertEqual(broken, [], f"Broken markdown links found: {broken}")
 
     def test_skills_frontmatter_and_agents_manifest(self):
-        """Verify all 5 skills have valid YAML frontmatter and agents/openai.yaml manifests."""
+        """Verify all 6 skills have valid YAML frontmatter and agents/openai.yaml manifests."""
         import yaml
         expected_skills = [
             "linsist-coach",
@@ -416,6 +416,7 @@ class TestRepositorySanity(unittest.TestCase):
             "linsist-basics",
             "linsist-os",
             "linsist-testlab",
+            "linsist-agent",
         ]
         for sk in expected_skills:
             skill_md = REPO_ROOT / "skills" / sk / "SKILL.md"
