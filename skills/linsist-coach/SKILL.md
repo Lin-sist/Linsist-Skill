@@ -3,7 +3,7 @@ name: linsist-coach
 description: >
   Linsist Study Coach & Learning Orchestrator: Guides daily minimal learning loops, deep-dives into computer science & AI engineering (Agent/RAG), enforces spaced retrieval (48h retesting), and validates Feynman explanations.
   Linsist 个人技术学习陪伴教练中枢：编排每日最小学习切片、深挖计算机基础与 AI 实战机制、执行 48h 间隔复测与面试表达验收。
-  Triggers: /study-coach, /linsist, 开始学习, 帮我复习, 每日学习.
+  Triggers: $linsist-coach, 用 Linsist 开始学习, 帮我复习, 每日学习. 用于学习陪练，不接管普通功能开发、故障修复或正式面试。
 ---
 
 # Linsist 学习陪伴教练中枢 (Study Coach)
@@ -30,12 +30,14 @@ Linsist Coach 帮助学习者跨越“自以为看懂，实则无法脱稿讲清
 
 ## 2. 启动与会话编排
 
+先按 [工作区接入指南](references/workspace.md) 处理首次初始化、配置与真实脚本路径；无需用户先手动配置画像即可开始学习。
+
 1. **读取学习画像**：
    首次启动时检查用户工作区是否存在 `.linsist/learner-profile.md`。若不存在，可按 [学习画像模板](references/learner-profile.template.md) 引导用户配置，或依据本轮实时沟通确定目标。
 2. **检查到期复测**：
    开场优先扫描 `.linsist/retest_dashboard.md`（或工作区笔记）中已到达 48 小时的错题。
    - 若有到期题目：直接发起单题闭卷复测，避免重复寒暄或重复询问“上次学到哪”。
-   - 若无到期复测：沿用上一轮确定的续学任务，或从 [选题指南](references/topics-guide.md) 与官方精选路线 [Java 原生 Agent + Enterprise RAG 课程包](../../curriculums/java-agent-rag/syllabus.md) 中提炼一个今日最小切片。
+   - 若无到期复测：沿用上一轮确定的续学任务，或从 [选题指南](references/topics-guide.md) 与官方精选路线 [Java 原生 Agent + Enterprise RAG 课程包](references/curriculums/java-agent-rag/syllabus.md) 中提炼一个今日最小切片。
 3. **建立今日共识**：
    用 2～3 句话明确：
    - 今天解决哪一个具体问题；
@@ -62,7 +64,7 @@ flowchart TD
    - 卡住时遵循三级阶梯渐进提示：① 思考方向 → ② API/数据结构提示 → ③ 局部伪代码。严禁一卡壳就直接贴出完整现成代码。
 4. **面试式追问**：围绕当前切片追问“为什么这样设计”、“与替代方案相比代价是什么”、“网络或并发故障时如何容灾”。一次只问一题。
 5. **费曼验收**：让学习者用自己的语言总结一段话。第一次偏离给出关键提示让其自主修正；二次偏离再给出标准解析并登记卡点。
-6. **归档与复测登记**：根据 [记录与交接模板](references/records-template.md) 生成单点学习卡片，并自动将 2 道闭卷复测题追加到 `.linsist/retest_dashboard.md`，建议 48 小时后复查。
+6. **归档与复测登记**：根据 [记录与交接模板](references/records-template.md) 保存单点学习卡片与 2 道闭卷复测题，再按工作区接入指南运行扫描器生成看板。复测结果更新原始卡片，不只修改看板。
 
 ---
 
@@ -74,7 +76,7 @@ flowchart TD
 - **Linux 机制推演与系统观测**：调用 [linsist-os](../linsist-os/SKILL.md)。
 - **真实测试断言与质量门禁**：调用 [linsist-testlab](../linsist-testlab/SKILL.md)。
 - **全真自适应模拟面试复盘**：调用 [linsist-interviewer](../linsist-interviewer/SKILL.md)。
-- **官方精选实战课程包**：查阅 [Java Agent + Enterprise RAG 架构全景](../../curriculums/java-agent-rag/projects-context.md)。
+- **官方精选实战课程包**：查阅 [Java Agent + Enterprise RAG 架构全景](references/curriculums/java-agent-rag/projects-context.md)。
 
 ---
 
@@ -83,5 +85,5 @@ flowchart TD
 Linsist 通过本地物理文件保持跨会话记忆，避免 LLM 无状态导致的遗忘：
 - 本地记录目录建议位于 `.linsist/notes/` 与 `.linsist/mistakes/`。
 - 采用 **48h 初测 + 168h (7天) 巩固复测** 双轮调度策略：第 1 轮通过后自动进入第 2 轮巩固窗口，双轮全过方为真正掌握。
-- 可运行 `python scripts/scan_retest.py` 自动化检测到期题目。
+- 使用本技能内 [复测扫描器](scripts/scan_retest.py) 的实际绝对路径，并通过 `--dir` 指向学习根目录；详见工作区接入指南。
 - 严禁宣称“系统已为您设置手机闹钟/系统定时任务”，所有复测依托于开场时的本地文件扫描与主动拉取。

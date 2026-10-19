@@ -5,7 +5,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
   <a href="README.md"><img src="https://img.shields.io/badge/lang-English-red.svg" alt="Language: English"></a>
   <img src="https://img.shields.io/badge/Agent_Skills-Standard_v1-green.svg" alt="Agent Skills Standard">
-  <img src="https://img.shields.io/badge/Python-3.8+-brightgreen.svg" alt="Python 3.8+">
+  <img src="https://img.shields.io/badge/Python-3.9+-brightgreen.svg" alt="Python 3.9+">
 </p>
 
 ---
@@ -52,152 +52,105 @@ graph TD
 Linsist 采用**“通用教练引擎 (Core Engine) + 领域精选路线包 (Curriculum Packs)”**的分层架构：
 
 ```text
-linsist/                                 # 仓库根目录
-├── README.md                            # 英文快速开始与规范
-├── README.zh-CN.md                      # 中文完整指南与教学法
-├── LICENSE                              # MIT 开源许可证
-├── .gitignore                           # 忽略本地笔记与运行缓存
-├── linsist.config.example.md            # 工作区配置模板
-│
-├── skills/                              # 【核心通用教练引擎】
-│   ├── linsist-coach/                   # 学习陪伴教练中枢（每日切片规划、机制深挖、复测编排）
-│   ├── linsist-interviewer/             # 自适应模拟面试官（技术一面自适应深挖、复盘报告交付）
-│   ├── linsist-basics/                  # 计算机基础与手写代码（Java 基础、集合、算法、HTTP、SQL）
-│   ├── linsist-os/                      # 操作系统与 Linux 机制（Ubuntu 命令实验、进程/内存/epoll/后端映射）
-│   └── linsist-testlab/                 # 测试实战导师（JUnit 5、Mockito、AAA 规范、断言与质量门禁）
-│
-├── curriculums/                         # 【领域精选路线包】
-│   ├── java-agent-rag/                  # 官方精选：Java 原生受控 Agent 与 Enterprise RAG 体系
-│   │   ├── projects-context.md          # 工业级架构全景（Flashback & RAG 深度机制图谱）
-│   │   └── syllabus.md                  # 拆解后的 20 个高频硬核知识切片
-│   └── custom-template/                 # 社区开发者自定义项目路线模板
-│       └── my-project.template.md
-│
-└── scripts/                             # 【辅助工具脚本】
-    ├── init_workspace.py                # 一键初始化本地 .linsist/ 工作区
-    └── scan_retest.py                   # 48h 待复测错题自动扫描与看板更新器
+Linsist-Skill/
+├── skills/
+│   ├── linsist-coach/
+│   │   ├── SKILL.md
+│   │   ├── scripts/                 # Bundled initializer and scanner
+│   │   └── references/
+│   │       └── curriculums/         # Bundled Java Agent/RAG and custom packs
+│   ├── linsist-interviewer/
+│   ├── linsist-basics/
+│   ├── linsist-os/
+│   └── linsist-testlab/
+├── scripts/
+│   ├── install.py                  # Installs and checks the complete suite
+│   ├── init_workspace.py           # Source-checkout compatibility entry
+│   └── scan_retest.py              # Source-checkout compatibility entry
+└── tests/                          # Unit and installed-workspace regression tests
 ```
 
 ---
 
-## 🛠️ 核心 Skill 矩阵与触发指令
+## 🛠️ 技能与调用方式
 
-| Skill 标识 | 中文全称 | 核心职责 | 触发口令 / Slash Commands |
-| :--- | :--- | :--- | :--- |
-| **`linsist-coach`** | 学习陪伴教练中枢 | 编排每日单点突破切片、控制互动节奏、组织 48h 看板复测、费曼机制验收 | `/study-coach`, `/linsist`, `开始学习`, `帮我复习`, `每日学习` |
-| **`linsist-interviewer`**| 自适应模拟面试官 | 基于简历和目标 JD 全真自适应技术一面、深挖工程证据、输出结构化复盘 | `/mock-interview`, `/linsist-interview`, `技术模拟面试`, `模拟一面` |
-| **`linsist-basics`** | 基础手写代码导师 | 聚焦 Java 基础、数据结构与高频手写题，分级阶梯提示，杜绝眼高手低 | `/basics-practice`, `/linsist-basics`, `开始今天的基础训练`, `手写代码训练` |
-| **`linsist-os`** | 操作系统机制导师 | 结合 Linux 终端观测命令与 Java 后端映射，推演进程上下文、epoll 与内存分页 | `/os-lab`, `/linsist-os`, `开始今天的操作系统学习`, `OS机制推演`, `Linux实验` |
-| **`linsist-testlab`** | 测试实战质量导师 | 将理论映射到真实测试类，指导 AAA 结构分析、故障驱动排障与质量防御 | `/testlab`, `/linsist-testlab`, `开始测试实践`, `测试用例演练`, `JUnit测试实战` |
+| 技能 | 职责 | 自然语言示例 |
+| :--- | :--- | :--- |
+| `$linsist-coach` | 每日学习编排、费曼验收、间隔复测 | 用 Linsist 开始今天的学习 |
+| `$linsist-interviewer` | 自适应模拟面试与统一复盘 | 用 Linsist 根据这份简历模拟技术一面 |
+| `$linsist-basics` | Java、集合、算法与手写训练 | 开始今天的 Java 基础训练 |
+| `$linsist-os` | 操作系统机制与 Linux 实验 | 通过 Linux 实验学习进程调度 |
+| `$linsist-testlab` | JUnit、Mockito 与断言分析 | 开始一次 JUnit 边界测试练习 |
 
----
+已启用自然语言自动选择。如果同时装有相似教学技能，显式 `$技能名` 更可靠。Codex 可通过 `/skills` 或输入 `$` 查找技能。本套件没有注册 `/linsist`、`/study-coach` 等别名命令。
 
-## 🚀 快速开始 (Quick Start)
+## 🚀 安装与首次使用
 
-### 1. 初始化本地持久化工作区
+辅助脚本需要 Python 3.9+，默认运行不依赖第三方 Python 包。仓库测试需要 PyYAML；复杂 YAML 配置解析可选安装它。只有具体练习涉及 Java、Maven、Gradle 或 Linux 命令时，才需要对应环境。
 
-在当前代码仓库或个人知识库根目录下运行初始化脚本：
-
-```bash
-# 自动生成 .linsist/ 目录、学习画像与 48h 看板
-python scripts/init_workspace.py
-```
-
-执行后将自动生成：
-- `.linsist/config.md`：工作区持久化参数。
-- `.linsist/learner-profile.md`：根据自身求职方向配置个人画像。
-- `.linsist/retest_dashboard.md`：48h 待复测物理看板。
-- `.linsist/notes/`：存放每日学习卡片。
-
-### 2. 将技能安装至各主流客户端环境
-
-Linsist 严格遵循开放 Agent Skills 规范，可无缝安装至 Claude Code、OpenAI Codex / Operator、Cursor、Windsurf、OpenCodeInterpreter 以及各类通用 Agent 环境：
-
-#### 📦 Claude Code (`~/.claude/skills/` 或工程根目录 `.claude/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.claude/skills && cp -r skills/* ~/.claude/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.claude\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.claude\skills\"
-  ```
-
-#### 📦 OpenAI Codex / Agent Operator (`~/.codex/skills/` 或 `~/.agents/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.codex/skills && cp -r skills/* ~/.codex/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.codex\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.codex\skills\"
-  ```
-
-#### 📦 Cursor (`.cursor/skills/` 或 `~/.cursor/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p .cursor/skills && cp -r skills/* .cursor/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path ".cursor\skills"
-  Copy-Item -Recurse -Force skills\* ".cursor\skills\"
-  ```
-
-#### 📦 Windsurf (`~/.codeium/windsurf/skills/` 或 `.windsurf/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.codeium/windsurf/skills && cp -r skills/* ~/.codeium/windsurf/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.codeium\windsurf\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.codeium\windsurf\skills\"
-  ```
-
-#### 📦 OpenCodeInterpreter / Antigravity / Gemini CLI / 标准 Agent 规范 (`~/.agents/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.agents/skills && cp -r skills/* ~/.agents/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.agents\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.agents\skills\"
-  ```
-
-### 3. 会话中触发对应专精技能
-
-- **每日学习陪伴**：输入 `/study-coach`、`/linsist` 或 `开始学习`，推进今日单点切片。
-- **自适应技术一面**：输入 `/mock-interview` 并附上你的简历，开启 40 分钟高真度模拟面试与复盘。
-- **代码手写与算法**：输入 `/basics-practice`，进行 15 分钟白板手写训练。
-- **Linux 系统机理**：输入 `/os-lab`，进行命令行内核可观测性实验推演。
-- **测试用例与质量门禁**：输入 `/testlab`，实战演练断言设计与故障复现。
-
-### 4. 执行 48h / 168h 双轮遗忘复测扫描
-
-随时运行扫描器，核查有哪些错题或手写任务已到达 48 小时初测或 168 小时（7天）巩固复测窗口：
+### 1. 安装完整套件
 
 ```bash
-# 标准交互式扫描并更新看板
-python scripts/scan_retest.py
-
-# 输出结构化 JSON（供脚本或 IDE 插件调用）
-python scripts/scan_retest.py --json
-
-# 仅筛选第 1 轮初测或第 2 轮巩固复测
-python scripts/scan_retest.py --stage 1
+git clone https://github.com/Lin-sist/Linsist-Skill.git
+cd Linsist-Skill
+python3 scripts/install.py
+python3 scripts/install.py --check
 ```
 
-扫描器将自动解析笔记卡片中的复测题目，标出逾期任务并静默更新 `.linsist/retest_dashboard.md`。
+默认安装到 `~/.agents/skills`，在该目录下直接生成 5 个 `linsist-*` 文件夹，并携带教练脚本与课程资源。如果源码仓库本身就在目标技能根目录内，安装器会创建目录符号链接，使 Codex 按规范化路径去重；其他情况下安装独立副本。没有符号链接权限的系统，请把源码放在技能根目录之外。链接安装会随本地源码修改同步生效。
+
+Windows PowerShell 使用 `py -3 scripts/install.py` 和 `py -3 scripts/install.py --check`。其他客户端或项目可显式指定其支持的技能根目录：
+
+```bash
+# Claude Code
+python3 scripts/install.py --dest ~/.claude/skills
+# 项目级 Codex 技能；替换为你的实际项目路径
+python3 scripts/install.py --dest /path/to/project/.agents/skills
+```
+
+Cursor、Windsurf、OpenCodeInterpreter 的扫描路径与调用语法以对应客户端版本为准，本仓库尚未完成这些客户端的实机验收。安装器默认保留已有目录；更新本套件使用 `python3 scripts/install.py --update`，该选项会替换已有 `linsist-*` 技能目录。个人笔记应保存在学习工作区，不放入安装目录。
+
+### 2. 在学习项目或笔记目录中开始
+
+下一轮对话选择 `$linsist-coach` 并输入：
+
+```text
+$linsist-coach 开始今天的学习，我的学习工作区是 /path/to/my-project。
+```
+
+教练会初始化缺失的工作区文件、检查到期复测，然后一次只提出一个问题。无需预先填完画像；也可以直接调用专项技能。模拟面试只需要本场简历与可选 JD，不会在启动时读取本地学习记录。
+
+如果技能未出现，重启客户端后再检查。仓库测试能验证安装资源与脚本行为，模型是否正确自动选择技能、对话质量是否达标，仍需在对应宿主中实际验证。
+
+### 3. 可选：手动初始化与复测
+
+在任意目录执行时，使用已安装脚本的绝对路径，并用 `--dir` 指定学习根目录：
+
+```bash
+python3 ~/.agents/skills/linsist-coach/scripts/init_workspace.py --dir /path/to/my-project
+python3 ~/.agents/skills/linsist-coach/scripts/scan_retest.py --dir /path/to/my-project --json
+# 只读扫描
+python3 ~/.agents/skills/linsist-coach/scripts/scan_retest.py --dir /path/to/my-project --json --no-dashboard
+```
+
+在源码仓库内，原有 `python3 scripts/init_workspace.py --dir ...` 与 `python3 scripts/scan_retest.py --dir ...` 入口仍然可用。
+
+工作区包含 `.linsist/config.md`、`learner-profile.md`、`notes/`、`mistakes/` 与 `retest_dashboard.md`。原始笔记是复测状态来源，先改笔记再扫描。JSON 与普通输出默认均刷新完整看板；`--stage 1`、`--stage 2` 只筛选输出。扫描按机器本地日历日期判断到期，不是精确小时闹钟；安装不会创建后台定时任务。
+
+### 4. 验证源码修改
+
+```bash
+python3 -m pip install -r requirements-dev.txt
+python3 -m unittest discover tests -v
+```
+
+集成测试会在带空格的临时路径中安装全部技能，检查本地链接，从无关项目目录初始化，再执行“待复测 → 首轮通过 → 全部掌握”的状态流转，并检查重复初始化、只读扫描与已有安装保护。
 
 ---
 
 ## 📚 官方精选路线：Java 原生 Agent + Enterprise RAG
 
-Linsist 内置官方首发精选路线包（位于 [`curriculums/java-agent-rag/`](curriculums/java-agent-rag/)）：
+Linsist 内置官方首发精选路线包（位于 [`skills/linsist-coach/references/curriculums/java-agent-rag/`](skills/linsist-coach/references/curriculums/java-agent-rag/)）：
 
 1. **Flashback 受控 Agent 核心体系 (S01 ~ S10)**：
    - 确定性状态机 (`AgentStageMachine`) 与防死循环跃迁
@@ -212,7 +165,7 @@ Linsist 内置官方首发精选路线包（位于 [`curriculums/java-agent-rag/
    - 句级别引用校验门禁 (`Citation Validator`) 拦截幻觉
    - 索引任务账本与分布式租约看门狗 (`Lease Guard`)
 
-*如需接入自定义业务工程，仅需参考 [`curriculums/custom-template/my-project.template.md`](curriculums/custom-template/my-project.template.md) 进行拓展。*
+*如需接入自定义业务工程，仅需参考 [`skills/linsist-coach/references/curriculums/custom-template/my-project.template.md`](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md) 进行拓展。*
 
 ---
 

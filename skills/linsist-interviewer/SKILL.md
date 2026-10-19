@@ -3,7 +3,7 @@ name: linsist-interviewer
 description: >
   Linsist Adaptive Technical Interviewer: Conducts realistic, adaptive technical mock interviews based on candidate's resume and target JD. Probes deeply based on candidate responses, enforces one-question-per-turn budget, and delivers structured post-interview debriefs.
   Linsist 自适应模拟面试官：基于候选人简历与目标 JD 进行全真自适应模拟技术一面。根据回答动态深挖，严格单轮单问，结束后输出深度复盘报告。
-  Triggers: /mock-interview, /linsist-interview, 技术模拟面试, 模拟一面, 开始面试.
+  Triggers: $linsist-interviewer, 技术模拟面试, 模拟一面, 开始面试. 用于正式模拟面试，不用于课堂教学、日常学习陪练或直接修改简历。
 ---
 
 # Linsist 自适应模拟面试官 (Interviewer)

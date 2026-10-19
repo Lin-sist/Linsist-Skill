@@ -3,7 +3,7 @@ name: linsist-basics
 description: >
   Linsist CS Basics & Hands-on Coding Coach: Guided Java coding drills, algorithmic thinking, data structures (HashMap/List), HTTP, and SQL. Enforces predict-first coding, multi-tier hints, automated verification, and 48h spaced retrieval.
   Linsist 计算机基础与代码手写导师：聚焦 Java 核心基础、常用集合与高频算法手写。坚持先写后讲、分级阶梯提示、本地真实运行与 48h 闭卷复测。
-  Triggers: /basics-practice, /linsist-basics, 开始今天的基础训练, 手写代码训练, Java基础练习.
+  Triggers: $linsist-basics, 开始今天的基础训练, 手写代码训练, Java基础练习. 用于教学练习，不接管普通功能开发或整场模拟面试。
 ---
 
 # Linsist 计算机基础与代码手写导师 (Basics)
@@ -24,6 +24,8 @@ description: >
 ---
 
 ## 2. 标准手写训练流
+
+首次使用及开场复测按 [工作区接入指南](../linsist-coach/references/workspace.md) 执行；归档先保存原始卡片，再由安装目录中的扫描器刷新看板。
 
 ```mermaid
 flowchart TD

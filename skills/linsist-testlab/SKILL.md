@@ -3,7 +3,7 @@ name: linsist-testlab
 description: >
   Linsist TestLab & Quality Assurance Mentor: Maps theoretical software testing (JUnit 5, Mockito, AAA, boundary conditions) into real project test suites (Agent/RAG). Guides predict-first test analysis, bug-driven learning, and 48h spaced retrieval.
   Linsist 测试实战导师：将软件测试概念（JUnit 5、Mockito、边界值、回归测试）映射到 Agent 与 RAG 的真实测试套件中。坚持先预测、故障驱动学习、实际运行断言与 48h 闭卷复测。
-  Triggers: /testlab, /linsist-testlab, 开始测试实践, 测试用例演练, JUnit测试实战.
+  Triggers: $linsist-testlab, 开始测试实践, 测试用例演练, JUnit测试实战. 用于测试教学，不接管普通修 Bug 或功能开发。
 ---
 
 # Linsist 测试实战导师 (TestLab)
@@ -25,6 +25,8 @@ description: >
 ---
 
 ## 2. 标准单次实践闭环（30～45 分钟）
+
+首次使用及开场复测按 [工作区接入指南](../linsist-coach/references/workspace.md) 执行；归档先保存原始卡片，再由安装目录中的扫描器刷新看板。
 
 ```mermaid
 flowchart TD

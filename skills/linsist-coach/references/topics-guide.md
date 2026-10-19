@@ -11,10 +11,10 @@
 
 ### 1. 领域项目实战主线 (Curriculum Packs)
 - **Java 原生受控 Agent 与 Enterprise RAG 体系**：
-  直接加载并查阅官方精选路线 [`curriculums/java-agent-rag/syllabus.md`](../../../curriculums/java-agent-rag/syllabus.md) 与架构快照 [`curriculums/java-agent-rag/projects-context.md`](../../../curriculums/java-agent-rag/projects-context.md)。
+  直接加载并查阅官方精选路线 [`curriculums/java-agent-rag/syllabus.md`](curriculums/java-agent-rag/syllabus.md) 与架构快照 [`curriculums/java-agent-rag/projects-context.md`](curriculums/java-agent-rag/projects-context.md)。
   涵盖从 FSM 状态机、Native Function Calling、HITL 二段确认，到 Dense+BM25 混合检索、RRF 融合与 Citation Validator 的 20 个硬核切片。
 - **自定义项目路线**：
-  参考 [`curriculums/custom-template/my-project.template.md`](../../../curriculums/custom-template/my-project.template.md) 接入个人或团队专属业务架构。
+  参考 [`curriculums/custom-template/my-project.template.md`](curriculums/custom-template/my-project.template.md) 接入个人或团队专属业务架构。
 
 ---
 

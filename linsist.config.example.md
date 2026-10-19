@@ -1,7 +1,7 @@
 # Linsist 本地工作区配置规范 (linsist.config.example.md)
 
 > Linsist 系列 Skill 采用**纯文本 Markdown 物理持久化**机制，将每日学习卡片、代码证据、错题与 48h / 168h 双轮复测看板保存在本地，彻底消除大语言模型跨会话无状态带来的“学完即忘”缺陷。
-> 运行 `python scripts/init_workspace.py` 会自动生成 `.linsist/` 工作区并生成初始配置。
+> 运行 `python3 scripts/init_workspace.py --dir /path/to/workspace` 会自动生成 `.linsist/` 工作区并生成初始配置。
 
 ---
 
@@ -14,9 +14,8 @@ linsist_version: "1.0.0"
 
 # 1. 本地存储路径配置
 storage:
-  # 可选: local_workspace (当前工程根目录) | obsidian_vault (外部知识库根路径)
+  # 学习根目录由脚本 --dir 指定；使用知识库时传入该知识库根目录
   storage_mode: "local_workspace"
-  base_dir: ".linsist"
   notes_dir: ".linsist/notes"
   mistakes_dir: ".linsist/mistakes"
   retest_dashboard: ".linsist/retest_dashboard.md"
@@ -38,7 +37,7 @@ spaced_retrieval:
 
 # 4. 当前挂载激活的课程包
 active_curriculums:
-  - "curriculums/java-agent-rag"
+  - "java-agent-rag"
 ```
 
 ---

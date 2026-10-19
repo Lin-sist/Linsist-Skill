@@ -16,7 +16,7 @@ from pathlib import Path
 
 # Add repo root and scripts to path
 REPO_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO_ROOT / "scripts"))
+sys.path.insert(0, str(REPO_ROOT / "skills/linsist-coach/scripts"))
 
 import init_workspace
 import scan_retest
@@ -431,7 +431,7 @@ class TestRepositorySanity(unittest.TestCase):
             self.assertTrue(openai_yaml.exists(), f"Missing agents/openai.yaml for {sk}")
             manifest = yaml.safe_load(openai_yaml.read_text(encoding="utf-8"))
             self.assertEqual(manifest["interface"]["display_name"], sk)
-            self.assertFalse(manifest["policy"]["allow_implicit_invocation"])
+            self.assertTrue(manifest["policy"]["allow_implicit_invocation"])
 
     def test_gitignore_ignores_linsist_entirely(self):
         """Verify .gitignore ignores .linsist/ entirely including retest_dashboard.md."""
@@ -452,7 +452,7 @@ class TestRepositorySanity(unittest.TestCase):
 
     def test_recall_precision_metric_definitions(self):
         """Verify Recall@K and Precision@K are accurately defined and differentiated in syllabus.md."""
-        syllabus_path = REPO_ROOT / "curriculums" / "java-agent-rag" / "syllabus.md"
+        syllabus_path = REPO_ROOT / "skills/linsist-coach/references/curriculums" / "java-agent-rag" / "syllabus.md"
         self.assertTrue(syllabus_path.exists())
         content = syllabus_path.read_text(encoding="utf-8")
 
@@ -470,8 +470,8 @@ class TestRepositorySanity(unittest.TestCase):
         targets = [
             REPO_ROOT / "skills" / "linsist-coach" / "SKILL.md",
             REPO_ROOT / "skills" / "linsist-interviewer" / "SKILL.md",
-            REPO_ROOT / "curriculums" / "java-agent-rag" / "syllabus.md",
-            REPO_ROOT / "curriculums" / "java-agent-rag" / "projects-context.md",
+            REPO_ROOT / "skills/linsist-coach/references/curriculums" / "java-agent-rag" / "syllabus.md",
+            REPO_ROOT / "skills/linsist-coach/references/curriculums" / "java-agent-rag" / "projects-context.md",
         ]
 
         for target in targets:

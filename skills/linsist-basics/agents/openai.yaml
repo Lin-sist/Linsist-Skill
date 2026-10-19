@@ -1,7 +1,7 @@
 interface:
   display_name: "linsist-basics"
-  short_description: "Linsist 计算机基础与代码手写导师：聚焦 Java 基础、数据结构与高频手写题，分级阶梯提示与 48h 闭卷复测"
+  short_description: "Linsist 基础训练：Java 集合、算法与手写代码，分级提示与复测"
   default_prompt: "使用 $linsist-basics 开始今天的基础手写与算法训练，给出具体可运行的代码任务，未写出前不直接给完整答案，通过阶梯提示引导完成。"
 
 policy:
-  allow_implicit_invocation: false
+  allow_implicit_invocation: true

@@ -5,14 +5,14 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
   <a href="README.zh-CN.md"><img src="https://img.shields.io/badge/lang-简体中文-red.svg" alt="Language: Chinese"></a>
   <img src="https://img.shields.io/badge/Agent_Skills-Standard_v1-green.svg" alt="Agent Skills Standard">
-  <img src="https://img.shields.io/badge/Python-3.8+-brightgreen.svg" alt="Python 3.8+">
+  <img src="https://img.shields.io/badge/Python-3.9+-brightgreen.svg" alt="Python 3.9+">
 </p>
 
 ---
 
 ## 📖 Overview
 
-**Linsist** is a production-grade Agent Skills suite designed for computer science fundamentals, Linux system internals, and hands-on Java Agent & Enterprise RAG engineering.
+**Linsist** is a Agent Skills suite designed for computer science fundamentals, Linux system internals, and hands-on Java Agent & Enterprise RAG engineering.
 
 Benchmarked against leading open-standard agent skills (such as `teach` and `build-to-learn`), Linsist bridges the gap between passive code reading and true engineering mastery through **predict-first exercises, active Feynman explanations, and physical 48h spaced retrieval**.
 
@@ -52,151 +52,105 @@ graph TD
 Linsist is structured into two clean layers: **Generic Core Engine** and **Pluggable Curriculum Packs**:
 
 ```text
-linsist/                                 # Repository Root
-├── README.md                            # English Documentation
-├── README.zh-CN.md                      # Chinese Comprehensive Guide
-├── LICENSE                              # MIT License
-├── .gitignore                           # Ignores local notes and caches
-├── linsist.config.example.md            # Workspace persistence config template
-│
-├── skills/                              # 【Core Coaching Engines】
-│   ├── linsist-coach/                   # Daily orchestrator & learning companion
-│   ├── linsist-interviewer/             # Adaptive mock interviewer & debriefing
-│   ├── linsist-basics/                  # Hands-on coding drills (Java, data structures, algorithms)
-│   ├── linsist-os/                      # OS internals & Linux lab experiments (Ubuntu commands)
-│   └── linsist-testlab/                 # Test-driven engineering (JUnit 5, Mockito, AAA, Quality Gate)
-│
-├── curriculums/                         # 【Domain Curriculum Packs】
-│   ├── java-agent-rag/                  # Official Pack: Java Controlled Agent & Enterprise RAG
-│   │   ├── projects-context.md          # Production architecture blueprints (Flashback & RAG)
-│   │   └── syllabus.md                  # 20 high-frequency, hardcore knowledge slices
-│   └── custom-template/                 # Community project template
-│       └── my-project.template.md
-│
-└── scripts/                             # 【Automation Scripts】
-    ├── init_workspace.py                # Initializes local .linsist/ directory
-    └── scan_retest.py                   # Automated scanner for due 48h retests
+Linsist-Skill/
+├── skills/
+│   ├── linsist-coach/
+│   │   ├── SKILL.md
+│   │   ├── scripts/                 # Bundled initializer and scanner
+│   │   └── references/
+│   │       └── curriculums/         # Bundled Java Agent/RAG and custom packs
+│   ├── linsist-interviewer/
+│   ├── linsist-basics/
+│   ├── linsist-os/
+│   └── linsist-testlab/
+├── scripts/
+│   ├── install.py                  # Installs and checks the complete suite
+│   ├── init_workspace.py           # Source-checkout compatibility entry
+│   └── scan_retest.py              # Source-checkout compatibility entry
+└── tests/                          # Unit and installed-workspace regression tests
 ```
 
 ---
 
-## 🛠️ Skills Matrix & Triggers
+## 🛠️ Skills and Invocation
 
-| Skill Namespace | Role & Domain | Primary Responsibilities | Slash Commands / Triggers |
-| :--- | :--- | :--- | :--- |
-| **`linsist-coach`** | Study Orchestrator | Daily minimal slice scheduling, Feynman verification, 48h dashboard sync | `/study-coach`, `/linsist`, `Start study`, `Review` |
-| **`linsist-interviewer`**| Adaptive Interviewer | Realistic technical mock interview, dynamic probing based on answers, debrief | `/mock-interview`, `/linsist-interview`, `Mock interview` |
-| **`linsist-basics`** | Hands-on Coding Coach | Whiteboard coding drills (10-20 min), stepped hints, complexity analysis | `/basics-practice`, `/linsist-basics`, `Basics drill` |
-| **`linsist-os`** | OS & Linux Mentor | Command-line observability (`vmstat`, `/proc`, `epoll`), Java backend mappings | `/os-lab`, `/linsist-os`, `OS lab` |
-| **`linsist-testlab`** | Testing & QA Mentor | AAA pattern breakdown, failure-driven debugging, regression test suites | `/testlab`, `/linsist-testlab`, `Test lab` |
+| Skill | Purpose | Example request |
+| :--- | :--- | :--- |
+| `$linsist-coach` | Daily study and spaced retrieval | Use Linsist to start today's study |
+| `$linsist-interviewer` | Adaptive mock interview | Use Linsist to interview me based on this resume |
+| `$linsist-basics` | Java, collections and coding drills | Start today's Java basics practice |
+| `$linsist-os` | OS mechanisms and Linux experiments | Help me learn process scheduling with a Linux experiment |
+| `$linsist-testlab` | JUnit, Mockito and test analysis | Start a JUnit boundary-test exercise |
 
----
+Automatic selection is enabled. Explicit `$skill-name` invocation is the most reliable way to select Linsist when similar teaching skills are installed. In Codex, use `/skills` or type `$` to find installed skills. The suite does not register aliases such as `/linsist` or `/study-coach`.
 
-## 🚀 Quick Start
+## 🚀 Install and Start
 
-### 1. Initialize Local Workspace
+Python 3.9+ is needed for the helper scripts; the default runtime has no required third-party packages. PyYAML is needed for the repository test suite and is optional for reading more complex YAML configuration. Java/Maven/Gradle and Linux commands are only needed for exercises that use them.
 
-Run the workspace initialization script in your target project directory or personal notes vault:
-
-```bash
-python scripts/init_workspace.py
-```
-
-This generates:
-- `.linsist/config.md`: Workspace settings.
-- `.linsist/learner-profile.md`: Personalized learner profile.
-- `.linsist/retest_dashboard.md`: Physical 48h spaced retrieval dashboard.
-- `.linsist/notes/`: Daily note cards storage.
-
-### 2. Install Skills into Your Client Environment
-
-Linsist conforms strictly to the open Agent Skills standard and is compatible with Claude Code, OpenAI Codex/Operator, Cursor, Windsurf, OpenCodeInterpreter, and standard Agent Skills runtimes.
-
-#### 📦 Claude Code (`~/.claude/skills/` or `.claude/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.claude/skills && cp -r skills/* ~/.claude/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.claude\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.claude\skills\"
-  ```
-
-#### 📦 OpenAI Codex / Agent Operator (`~/.codex/skills/` or `~/.agents/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.codex/skills && cp -r skills/* ~/.codex/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.codex\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.codex\skills\"
-  ```
-
-#### 📦 Cursor (`.cursor/skills/` or `~/.cursor/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p .cursor/skills && cp -r skills/* .cursor/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path ".cursor\skills"
-  Copy-Item -Recurse -Force skills\* ".cursor\skills\"
-  ```
-
-#### 📦 Windsurf (`~/.codeium/windsurf/skills/` or `.windsurf/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.codeium/windsurf/skills && cp -r skills/* ~/.codeium/windsurf/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.codeium\windsurf\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.codeium\windsurf\skills\"
-  ```
-
-#### 📦 OpenCodeInterpreter / Antigravity / Gemini CLI / Generic Agent Standard (`~/.agents/skills/`)
-- **macOS / Linux**:
-  ```bash
-  mkdir -p ~/.agents/skills && cp -r skills/* ~/.agents/skills/
-  ```
-- **Windows (PowerShell)**:
-  ```powershell
-  New-Item -ItemType Directory -Force -Path "$HOME\.agents\skills"
-  Copy-Item -Recurse -Force skills\* "$HOME\.agents\skills\"
-  ```
-
-### 3. Trigger Skills in Your Agent Session
-
-- **Daily Study Session**: Invoke `/study-coach` or `/linsist` to start your daily minimal knowledge slice.
-- **Adaptive Mock Interview**: Invoke `/mock-interview` and provide your resume for a 40-minute deep-dive session.
-- **Hands-on Coding Drill**: Invoke `/basics-practice` for timed whiteboard code implementations.
-- **Linux & OS Internals**: Invoke `/os-lab` for command-line kernel observability experiments.
-- **Test-Driven Lab**: Invoke `/testlab` for JUnit 5 / Mockito failure reproduction.
-
-### 4. Run the 48h / 168h Spaced Retrieval Scanner
-
-Periodically scan your notes for cards that have reached their 48-hour initial retest or 168-hour (7-day) consolidation retest deadline:
+### 1. Install the complete suite
 
 ```bash
-# Standard interactive scan & dashboard update
-python scripts/scan_retest.py
-
-# JSON output for IDE extensions or automated hooks
-python scripts/scan_retest.py --json
-
-# Filter specifically by Stage 1 (48h) or Stage 2 (168h)
-python scripts/scan_retest.py --stage 1
+git clone https://github.com/Lin-sist/Linsist-Skill.git
+cd Linsist-Skill
+python3 scripts/install.py
+python3 scripts/install.py --check
 ```
 
-The script automatically syncs `.linsist/retest_dashboard.md` and displays due items across both repetition stages.
+The default destination is `~/.agents/skills`. Five `linsist-*` folders are installed directly under that root, including the coach's scripts and curriculum resources. If the source checkout is itself inside the destination skills root, the installer uses directory symlinks so Codex deduplicates the same canonical files. Otherwise it installs independent copies. On systems without symlink privileges, keep the source checkout outside the skills root. Linked installations follow local source changes.
+
+On Windows PowerShell, use `py -3 scripts/install.py` and `py -3 scripts/install.py --check`. For a different client or project, set its supported skills root explicitly:
+
+```bash
+# Claude Code
+python3 scripts/install.py --dest ~/.claude/skills
+# Project-local Codex skills; replace the path with your actual project
+python3 scripts/install.py --dest /path/to/project/.agents/skills
+```
+
+Cursor, Windsurf, and OpenCodeInterpreter require the skills location and invocation syntax supported by that client/version; these clients have not been tested here. Existing folders are preserved unless `--update` is explicitly passed. To update this suite, use `python3 scripts/install.py --update`; keep personal notes in the learning workspace, outside installed skill folders.
+
+### 2. Start from your learning project or notes workspace
+
+On your next turn, select `$linsist-coach` and say:
+
+```text
+$linsist-coach Start today's study. My learning workspace is /path/to/my-project.
+```
+
+The coach initializes missing workspace files, checks due retests, and starts with one question. A completed learner profile is optional. You can also invoke any specialized skill directly. The interviewer starts from your resume and optional JD without reading local learning records.
+
+If the skills do not appear, restart the client and check again. The repository tests verify installed resources and CLI behavior; automatic model selection and dialogue quality still depend on the host and are not guaranteed by static checks.
+
+### 3. Optional manual workspace and retest commands
+
+From any directory, use the installed script's absolute path and pass the learning workspace with `--dir`:
+
+```bash
+python3 ~/.agents/skills/linsist-coach/scripts/init_workspace.py --dir /path/to/my-project
+python3 ~/.agents/skills/linsist-coach/scripts/scan_retest.py --dir /path/to/my-project --json
+# Read-only scan
+python3 ~/.agents/skills/linsist-coach/scripts/scan_retest.py --dir /path/to/my-project --json --no-dashboard
+```
+
+Inside the source checkout, the original `python3 scripts/init_workspace.py --dir ...` and `python3 scripts/scan_retest.py --dir ...` entry points remain available.
+
+Workspace state is stored in `.linsist/config.md`, `learner-profile.md`, `notes/`, `mistakes/`, and `retest_dashboard.md`. Original note cards are the source of retest status; edit them before rescanning. JSON and ordinary output both update the complete dashboard by default. `--stage 1` or `--stage 2` filters output only. Retests use local calendar dates, not exact hourly alarms, and run when requested or when a teaching skill starts; installation creates no background scheduler.
+
+### 4. Verify a source change
+
+```bash
+python3 -m pip install -r requirements-dev.txt
+python3 -m unittest discover tests -v
+```
+
+The integration test installs into a temporary skills root with spaces in the path, checks all local links, initializes an unrelated project, and exercises pending → first-stage passed → fully mastered status transitions. It also checks repeat initialization, read-only scans, and preservation of existing installations.
 
 ---
 
 ## 📚 Official Curriculum: Java Controlled Agent & Enterprise RAG
 
-Linsist ships with an official flagship curriculum located in [`curriculums/java-agent-rag/`](curriculums/java-agent-rag/):
+Linsist ships with an official flagship curriculum located in [`skills/linsist-coach/references/curriculums/java-agent-rag/`](skills/linsist-coach/references/curriculums/java-agent-rag/):
 
 1. **Flashback Controlled Agent Runtime (S01 ~ S10)**:
    - Deterministic Finite State Machine (`AgentStageMachine`) preventing uncontrolled loops
@@ -211,7 +165,7 @@ Linsist ships with an official flagship curriculum located in [`curriculums/java
    - Sentence-level `Citation Validator` for anti-hallucination guardrails
    - Reliable Index Task Ledger with distributed `Lease Guard` heartbeats
 
-*To plug in your custom project, refer to [`curriculums/custom-template/my-project.template.md`](curriculums/custom-template/my-project.template.md).*
+*To plug in your custom project, refer to [`skills/linsist-coach/references/curriculums/custom-template/my-project.template.md`](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md).*
 
 ---
 

@@ -3,7 +3,7 @@ name: linsist-os
 description: >
   Linsist Operating System & Linux Internals Coach: Translates OS theoretical concepts (processes, threads, memory paging, I/O multiplexing) into observable Ubuntu/Linux commands and Java backend mappings. Enforces predict-first experimentation, Feynman explanations, and 48h spaced retrieval.
   Linsist 操作系统与 Linux 机制导师：将进程线程、虚拟内存、I/O 多路复用等理论转化为可观测的 Linux 命令实验与 Java 后端映射。坚持先预测后运行、费曼复述与 48h 闭卷复测。
-  Triggers: /os-lab, /linsist-os, 开始今天的操作系统学习, OS机制推演, Linux实验.
+  Triggers: $linsist-os, 开始今天的操作系统学习, OS机制推演, Linux实验. 用于学习与实验，不接管生产运维故障。
 ---
 
 # Linsist 操作系统与 Linux 机制导师 (OS & Linux)
@@ -24,6 +24,8 @@ description: >
 ---
 
 ## 2. 标准单次学习与实验流（30～45 分钟）
+
+首次使用及开场复测按 [工作区接入指南](../linsist-coach/references/workspace.md) 执行；归档先保存原始卡片，再由安装目录中的扫描器刷新看板。
 
 ```mermaid
 flowchart TD
