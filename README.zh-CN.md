@@ -1,4 +1,4 @@
-# Linsist：工业级计算机基础、Linux机制推演与 Java Agent / RAG 实战学习及模拟面试 Agent Skill 套件
+# Linsist：面向 Agent 岗位的简历靶向基础学习与手写训练
 
 <p align="center">
   <a href="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml"><img src="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
@@ -12,7 +12,7 @@
 
 ## 📖 项目简介
 
-**Linsist** 是一套面向 Java 后端研发、操作系统底层机理与工业级受控 Agent / Enterprise RAG 体系的**个人技术学习陪伴与自适应模拟面试 Agent Skill 套件**。
+**Linsist** 是一套面向 Agent 岗位的开源学习 Skill。依据每位使用者自己的简历、可选岗位 JD 和实际基础缺口，安排基础知识、独立手写与面试复述，不预装作者个人简历，不绑定特定项目或操作系统。
 
 对标现代 Agent Skills 规范（如 `teach`、`build-to-learn`），Linsist 致力于彻底解决技术学习中**“自以为看懂，实则无法脱稿讲清”、“脱离代码纸上谈兵”**以及**“跨会话学完即忘”**的三大核心痛点。
 
@@ -112,12 +112,16 @@ python3 scripts/install.py --dest /path/to/project/.agents/skills
 
 Cursor、Windsurf、OpenCodeInterpreter 的扫描路径与调用语法以对应客户端版本为准，本仓库尚未完成这些客户端的实机验收。安装器默认保留已有目录；更新本套件使用 `python3 scripts/install.py --update`，该选项会替换已有 `linsist-*` 技能目录。个人笔记应保存在学习工作区，不放入安装目录。
 
+### 开源版本与本地自用配置
+
+公开安装包仅包含指定的 6 个 `linsist-*` 技能。简历、项目映射、学习记录与设备安排保存在本地学习工作区，或保存在仓库之外、单独命名的自用 Skill 中。安装器不会同步或覆盖无关的自用 Skill，`--update` 也只更新本套件。
+
 ### 2. 在学习项目或笔记目录中开始
 
 下一轮对话选择 `$linsist-coach` 并输入：
 
 ```text
-$linsist-coach 开始今天的学习，我的学习工作区是 /path/to/my-project。
+$linsist-coach 根据我的简历开始一次面向 Agent 岗位的基础手写练习，学习工作区是 /path/to/my-project。
 ```
 
 教练会初始化缺失的工作区文件、检查到期复测，然后一次只提出一个问题。无需预先填完画像；也可以直接调用专项技能。模拟面试只需要本场简历与可选 JD，不会在启动时读取本地学习记录。
@@ -150,9 +154,9 @@ python3 -m unittest discover tests -v
 
 ---
 
-## Agent Foundations：Linux 端简历靶向手写
+## Agent Foundations：简历靶向基础手写
 
-`$linsist-agent` 沿用基础训练风格：一次概念摸底、最少讲解、一个 10～20 分钟手写函数、实际运行，再用一个问题验收面试表达。优先当前简历出现的 Agent 机制，允许一个小拓展，不把长期路线图变成必修清单。
+`$linsist-agent` 沿用基础训练风格：一次概念摸底、最少讲解、一个 10～20 分钟手写函数、实际运行，再用一个问题验收面试表达。优先使用者当前简历出现的 Agent 机制，允许一个小拓展。下列 P0/P1 是候选优先级，按个人缺口选题，不默认学完整套。
 
 - **P0**：有界 Loop、工具白名单、ReAct 动作/观测关联、状态迁移、上下文、分档记忆、提议确认、n-gram 护栏、单次反思与共享时间预算。
 - **P1**：按面试缺口选学 RPC/MCP 基础、trace 元数据、离线评测；框架迁移、多智能体、GraphRAG、微调均不默认安排。
@@ -164,28 +168,15 @@ $linsist-agent 按我当前简历开始一次 Agent 基础手写练习，提交�
 
 `/linsist-agent`、`/agent-practice` 作为文本触发词；不会自动注册宿主 slash 命令。客户端拦截未知 slash 命令时请使用 `$linsist-agent`。本技能可独立开始练习，持久化复测复用完整套件已有 `.linsist/` 扫描器。私人简历不内置、不随套件公开。
 
-详见 [课程范围](skills/linsist-agent/references/curriculums/agent-foundations/syllabus.md)、[手写题输入输出契约](skills/linsist-agent/references/curriculums/agent-foundations/exercises.md)、[项目口径差异与修复](skills/linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md)。通用知识、独立实验与 Flashback/RAG 已实现能力必须分开，实验通过不自动变成简历项目经历。
+详见 [课程范围](skills/linsist-agent/references/curriculums/agent-foundations/syllabus.md)、[手写题输入输出契约](skills/linsist-agent/references/curriculums/agent-foundations/exercises.md)、[简历证据对齐检查表](skills/linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md)。通用知识、独立实验与使用者项目已实现能力必须分开，实验通过不自动变成简历项目经历。
 
 ---
 
-## 📚 官方精选路线：Java 原生 Agent + Enterprise RAG
+## 📚 可选课程：Java Agent / RAG 教学示例
 
-Linsist 内置官方首发精选路线包（位于 [`skills/linsist-coach/references/curriculums/java-agent-rag/`](skills/linsist-coach/references/curriculums/java-agent-rag/)）：
+[Java Agent / RAG 课程包](skills/linsist-coach/references/curriculums/java-agent-rag/) 提供虚构教学场景与 20 个最小切片，涉及循环、工具校验、状态迁移、HITL、记忆、超时、召回、排序、引用和评测。仅在符合使用者简历与语言时选用；新工作区默认不激活任何课程。
 
-1. **Flashback 受控 Agent 核心体系 (S01 ~ S10)**：
-   - 确定性状态机 (`AgentStageMachine`) 与防死循环跃迁
-   - Native Function Calling 强类型 DTO 绑定与校验白名单
-   - Human-in-the-Loop (HITL) 二段式确认与挂起事务
-   - 共享全局超时预算 (`Shared Deadline Budget`) 与零隐式重试
-   - 基于 MySQL 元数据检索、时间标签与分档字符预算的轻量记忆
-2. **Enterprise RAG 检索工程核心体系 (S11 ~ S20)**：
-   - 稠密语义 (Milvus IVF_FLAT；HNSW 仅作可选比较) + 稀疏关键词 (BM25) 双路召回
-   - 倒数排名融合算法 (`RRF - Reciprocal Rank Fusion`) 数学机制
-   - 启发式默认重排、可选模型重排与显式故障降级
-   - 引用片段重合度校验 (`CitationValidator`)，不冒充语义蕴含验证
-   - 索引任务账本与分布式租约看门狗 (`Lease Guard`)
-
-*如需接入自定义业务工程，仅需参考 [`skills/linsist-coach/references/curriculums/custom-template/my-project.template.md`](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md) 进行拓展。*
+接入自己的项目可参考 [自定义课程模板](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md)。课程示例仅用于学习，个人项目经历必须来自使用者自己的证据。
 
 ---
 

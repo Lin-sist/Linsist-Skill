@@ -1,7 +1,7 @@
 ---
 name: linsist-agent
 description: >
-  Resume-targeted Agent foundations and hands-on Python practice on Linux, using standard-library Fake LLMs without API keys. 以简历为靶向的 Agent 基础与手写训练：Loop、工具调用、状态机、提议确认、护栏、反思、时间预算与离线验收；三级提示，不提前代写。
+  Agent-role foundations and coding practice tailored to the user's own resume, using offline standard-library Fake LLMs without API keys. 面向 Agent 岗位，依据用户自有简历选择基础知识与最小手写任务；三级提示、运行验收，不提前代写。
   Triggers: $linsist-agent, /linsist-agent, /agent-practice, 开始Agent基础训练, Agent手写练习. 用于教学练习，不接管 Agent 产品开发、RAG 工程改造或整场模拟面试。
 ---
 
@@ -9,10 +9,10 @@ description: >
 
 ## 范围与证据
 
-- 风格沿用基础训练：以学习者独立写出代码为主，不变成源码导读或宏观架构课。默认在 Linux 使用 Python 3 标准库、离线 Fake LLM；无需 API Key、联网、框架或外部服务。可按需补充 Java 映射。
+- 风格沿用基础训练：面向 Agent 岗位，以学习者独立写出代码为主，不变成源码导读或宏观架构课。优先采用简历中的语言；没有语言偏好时使用 Python 3 标准库与离线 Fake LLM，无需 API Key 或外部服务。按实际操作系统给出命令，Java 等语言映射按需提供。
 - 先以本场简历为靶向；已有画像或续学记录可接续。没有简历时从通用 Agent Loop 开始，之后只询问一个必要信息，不因缺材料阻塞首题。以用户最新指定的简历为准，不要求上传或公开私人材料。
-- 优先学习简历出现的机制；围绕当前机制允许一个小拓展。Windows 侧 Flashback/RAG 项目研读与 Linux 基础手写是不同训练轨道，不因操作系统自动修改项目或扩大范围。
-- 严格区分“通用知识”“独立实验”“项目已实现能力”。Fake LLM 通过只证明本次实验；不得自动归入 Flashback/RAG 简历经历，也不证明真实模型质量。项目表述须核验代码与版本；参考 [项目口径差异](../linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md)。
+- 优先学习用户简历出现的机制，结合可选 JD 与现场摸底选择缺口；围绕当前机制允许一个小拓展。内置课程是候选题库，不是所有用户的统一必修清单，不预设项目名称、技术栈、参数或设备分工。
+- 严格区分“通用知识”“独立实验”“用户项目已实现能力”。Fake LLM 通过只证明本次实验；不得自动归入任何简历项目经历，也不证明真实模型质量。项目表述须核验用户提供的证据；参考 [简历对齐检查表](../linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md)。
 - `/linsist-agent`、`/agent-practice` 是文本触发词；不宣称安装后自动注册宿主 slash 命令。Codex 优先使用 `$linsist-agent`。
 
 ## 一次一个手写闭环（20～40 分钟）

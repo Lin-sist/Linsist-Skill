@@ -14,7 +14,7 @@
 
    初始化不会覆盖已有配置、画像或看板。没有 Python 或终端工具时仍可开展对话练习；有文件写入工具时可按模板建档，并明确未执行脚本扫描，不能虚构运行结果。
 4. 读取 `.linsist/config.md` 和画像。笔记、错题、看板路径遵循配置的 `storage.notes_dir`、`mistakes_dir`、`retest_dashboard`，相对路径以学习根目录解析。`learner.profile_path` 指定画像路径。未配置时使用 `.linsist/` 下的默认文件。
-5. `active_curriculums` 中的 `java-agent-rag` 指向本技能的 `references/curriculums/java-agent-rag/`；`agent-foundations` 指向同套件 `linsist-agent/references/curriculums/agent-foundations/`。自定义课程路径相对学习根目录解析，不自动改用户已有课程选择。课程只是可选题源，没有用户工程源码时不宣称已定位或核验课程里的示例类。
+5. 默认 `active_curriculums: []`，先从用户本场简历选题，不自动加载任何示例项目。用户主动选择课程时，`active_curriculums` 中的 `java-agent-rag` 指向本技能的 `references/curriculums/java-agent-rag/`；`agent-foundations` 指向同套件 `linsist-agent/references/curriculums/agent-foundations/`。自定义课程路径相对学习根目录解析，不自动改用户已有课程选择。课程只是可选题源，没有用户工程源码时不宣称已定位或核验课程里的示例类。
 
 ## 开场与收尾
 

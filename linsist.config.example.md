@@ -23,7 +23,7 @@ storage:
 # 2. 学习者画像路径
 learner:
   profile_path: ".linsist/learner-profile.md"
-  target_role: "Java Agent / Enterprise RAG Engineer"
+  target_role: "Agent Engineer"
 
 # 3. 48h / 168h 双轮遗忘复测引擎策略
 spaced_retrieval:
@@ -36,8 +36,7 @@ spaced_retrieval:
   auto_scan_on_startup: true
 
 # 4. 当前挂载激活的课程包
-active_curriculums:
-  - "java-agent-rag"
+active_curriculums: []
 ```
 
 ---

@@ -119,6 +119,47 @@ class TestInstalledSuite(unittest.TestCase):
         return subprocess.run([sys.executable, *map(str, args)], cwd=cwd,
                               capture_output=True, text=True, check=check)
 
+    def test_new_workspace_has_no_personal_curriculum(self):
+        import yaml
+        with tempfile.TemporaryDirectory() as temp:
+            self.run_cli(RUNTIME / "init_workspace.py", "--dir", temp)
+            config_file = Path(temp) / ".linsist/config.md"
+            config = yaml.safe_load(re.search(
+                r"```yaml\n(.*?)\n```", config_file.read_text(encoding="utf-8"), re.DOTALL
+            ).group(1))
+            self.assertEqual(config["active_curriculums"], [])
+            self.assertEqual(config["learner"]["target_role"], "Agent Engineer")
+            config_file.write_text("My own curriculum and role", encoding="utf-8")
+            self.run_cli(RUNTIME / "init_workspace.py", "--dir", temp)
+            self.assertEqual(config_file.read_text(encoding="utf-8"), "My own curriculum and role")
+
+    def test_install_and_update_preserve_unrelated_personal_skill(self):
+        with tempfile.TemporaryDirectory() as temp:
+            dest = Path(temp) / "skills"
+            private = dest / "personal-agent"
+            private.mkdir(parents=True)
+            (private / "SKILL.md").write_text("My private skill", encoding="utf-8")
+            (private / "resume.md").write_text("Private resume fixture", encoding="utf-8")
+            before = {p.name: p.read_bytes() for p in private.iterdir()}
+            for flags in ((), ("--update",), ("--check",)):
+                self.run_cli(REPO_ROOT / "scripts/install.py", "--dest", dest, *flags)
+                self.assertEqual({p.name: p.read_bytes() for p in private.iterdir()}, before)
+                self.assertFalse(private.is_symlink())
+            self.assertEqual(len(list(dest.glob("linsist-*/SKILL.md"))), 6)
+
+    def test_public_distribution_does_not_bundle_author_context(self):
+        with tempfile.TemporaryDirectory() as temp:
+            dest = Path(temp) / "skills"
+            self.run_cli(REPO_ROOT / "scripts/install.py", "--dest", dest)
+            forbidden = ("/home/lin/", "Flashback", "时光回序", "RESUME_TARGET_STUDY_PLAN",
+                         "ROADMAP_2027_AI_AGENT_ENGINEER", "10月_Agent开发",
+                         "MySqlMemoryPort", "AgentWitnessTurnPolicy")
+            for file in dest.rglob("*"):
+                if file.is_file() and file.suffix in (".md", ".yaml", ".py"):
+                    text = file.read_text(encoding="utf-8")
+                    for identifier in forbidden:
+                        self.assertNotIn(identifier, text, (file.relative_to(dest), identifier))
+
     def test_install_and_external_workspace_lifecycle(self):
         with tempfile.TemporaryDirectory(prefix="linsist install ") as temp:
             root = Path(temp)

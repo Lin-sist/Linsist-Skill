@@ -22,7 +22,7 @@ storage:
 
 learner:
   profile_path: ".linsist/learner-profile.md"
-  target_role: "Java Agent / Enterprise RAG Engineer"
+  target_role: "Agent Engineer"
 
 spaced_retrieval:
   interval_hours_tier1: 48
@@ -30,8 +30,7 @@ spaced_retrieval:
   max_retest_per_session: 2
   auto_scan_on_startup: true
 
-active_curriculums:
-  - "java-agent-rag"
+active_curriculums: []
 ```
 """
 

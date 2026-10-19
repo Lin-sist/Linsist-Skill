@@ -1,4 +1,4 @@
-# Linsist: Open Agent Skills for Technical Mastery & Adaptive Mock Interviews
+# Linsist: Resume-Guided Foundations for Agent Engineering Roles
 
 <p align="center">
   <a href="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml"><img src="https://github.com/Lin-sist/Linsist-Skill/actions/workflows/ci.yml/badge.svg" alt="CI Status"></a>
@@ -12,7 +12,7 @@
 
 ## 📖 Overview
 
-**Linsist** is a Agent Skills suite designed for computer science fundamentals, Linux system internals, and hands-on Java Agent & Enterprise RAG engineering.
+**Linsist** is an open skill suite for people preparing for Agent engineering roles. It uses each learner’s own resume, optional job description, and current knowledge gaps to select foundational concepts, handwritten coding exercises, and interview explanations. It does not bundle a personal resume or assume a particular project or operating system.
 
 Benchmarked against leading open-standard agent skills (such as `teach` and `build-to-learn`), Linsist bridges the gap between passive code reading and true engineering mastery through **predict-first exercises, active Feynman explanations, and physical 48h spaced retrieval**.
 
@@ -112,12 +112,16 @@ python3 scripts/install.py --dest /path/to/project/.agents/skills
 
 Cursor, Windsurf, and OpenCodeInterpreter require the skills location and invocation syntax supported by that client/version; these clients have not been tested here. Existing folders are preserved unless `--update` is explicitly passed. To update this suite, use `python3 scripts/install.py --update`; keep personal notes in the learning workspace, outside installed skill folders.
 
+### Public skills and local customization
+
+The public distribution installs only the six named `linsist-*` skills. Keep your resume, project mappings, learning records, and device preferences in a local workspace or in a separately named personal skill outside this repository. The installer does not synchronize or overwrite unrelated personal skills, including during `--update`.
+
 ### 2. Start from your learning project or notes workspace
 
 On your next turn, select `$linsist-coach` and say:
 
 ```text
-$linsist-coach Start today's study. My learning workspace is /path/to/my-project.
+$linsist-coach Use my resume to start one foundations exercise for an Agent role. My learning workspace is /path/to/my-project.
 ```
 
 The coach initializes missing workspace files, checks due retests, and starts with one question. A completed learner profile is optional. You can also invoke any specialized skill directly. The interviewer starts from your resume and optional JD without reading local learning records.
@@ -150,9 +154,9 @@ The integration test installs into a temporary skills root with spaces in the pa
 
 ---
 
-## Agent Foundations: Resume-Targeted Coding on Linux
+## Agent Foundations: Resume-Targeted Coding
 
-`$linsist-agent` follows the basics coach style: one concept check, a short explanation, one 10–20 minute handwritten function, actual execution, then one interview follow-up. It prioritizes Agent mechanisms in the current resume and permits one small adjacent extension, rather than turning a long-term roadmap into a mandatory syllabus.
+`$linsist-agent` follows the basics coach style: one concept check, a short explanation, one 10–20 minute handwritten function, actual execution, then one interview follow-up. It prioritizes Agent mechanisms in the learner’s current resume and permits one small adjacent extension. P0/P1 below are example priorities; only relevant gaps become exercises.
 
 - **P0**: bounded Loop, Tool Calling, ReAct action/observation linkage, state transitions, context, time-banded memory, proposal confirmation, n-gram guardrails, one-shot reflection, and shared deadline budgets.
 - **P1**: the minimum RPC/MCP concepts, trace metadata, and offline evaluation needed for interview gaps. Framework migration, multi-agent systems, GraphRAG and fine-tuning are optional future topics.
@@ -164,28 +168,15 @@ $linsist-agent Use my current resume to start one Agent foundations coding exerc
 
 `/linsist-agent` and `/agent-practice` are recognized text trigger phrases, not automatically registered host slash commands; use `$linsist-agent` if the client intercepts unknown slash commands. The new skill can start independently; shared persistence uses the complete suite's existing `.linsist/` scanner. Personal resumes are not bundled or published.
 
-See the [syllabus](skills/linsist-agent/references/curriculums/agent-foundations/syllabus.md), [exercise contracts](skills/linsist-agent/references/curriculums/agent-foundations/exercises.md), and [project alignment notes](skills/linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md). General knowledge, synthetic experiments and verified Flashback/RAG capabilities remain separate; passing an exercise never creates resume project experience.
+See the [syllabus](skills/linsist-agent/references/curriculums/agent-foundations/syllabus.md), [exercise contracts](skills/linsist-agent/references/curriculums/agent-foundations/exercises.md), and [resume evidence checklist](skills/linsist-coach/references/curriculums/java-agent-rag/alignment-notes.md). General knowledge, synthetic experiments and verified capabilities in the learner’s own projects remain separate; passing an exercise never creates resume project experience.
 
 ---
 
-## 📚 Official Curriculum: Java Controlled Agent & Enterprise RAG
+## 📚 Optional Curriculum: Java Agent / RAG Examples
 
-Linsist ships with an official flagship curriculum located in [`skills/linsist-coach/references/curriculums/java-agent-rag/`](skills/linsist-coach/references/curriculums/java-agent-rag/):
+The [Java Agent / RAG pack](skills/linsist-coach/references/curriculums/java-agent-rag/) contains hypothetical teaching scenarios and 20 small slices: loops, tool validation, state transitions, HITL, memory, deadlines, retrieval, ranking, citations, and evaluation. Enable it only when it fits the learner’s resume and language. New workspaces start with no active curriculum.
 
-1. **Flashback Controlled Agent Runtime (S01 ~ S10)**:
-   - Deterministic Finite State Machine (`AgentStageMachine`) preventing uncontrolled loops
-   - Native Function Calling with strong DTO binding and tool whitelist validation
-   - Human-in-the-Loop (HITL) 2-phase confirmation for destructive operations
-   - Shared Deadline Budget and zero silent automatic retries
-   - MySQL metadata memory with time labels and banded character budgets
-2. **Enterprise RAG Retrieval Engineering (S11 ~ S20)**:
-   - Hybrid Retrieval: Dense Semantic (Milvus IVF_FLAT; HNSW as an optional comparison) + Sparse Keyword (BM25)
-   - Reciprocal Rank Fusion (`RRF`) score reconciliation
-   - Heuristic reranking by default, with optional model reranking and explicit fallback
-   - Citation snippet overlap checks, distinct from semantic entailment verification
-   - Reliable Index Task Ledger with distributed `Lease Guard` heartbeats
-
-*To plug in your custom project, refer to [`skills/linsist-coach/references/curriculums/custom-template/my-project.template.md`](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md).*
+Map your own project using the [custom curriculum template](skills/linsist-coach/references/curriculums/custom-template/my-project.template.md). A template is a learning aid; project experience requires the learner’s own evidence.
 
 ---
 

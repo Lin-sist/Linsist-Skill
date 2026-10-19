@@ -10,10 +10,10 @@
 ## 一、主线任务推荐路径
 
 ### 1. 领域项目实战主线 (Curriculum Packs)
-- **Agent 基础手写轨道**：简历机制讲不清或写不出时，先用 [linsist-agent](../../linsist-agent/SKILL.md) 的 [Agent Foundations](../../linsist-agent/references/curriculums/agent-foundations/syllabus.md)。默认一个离线函数，先 P0；不会因选择 Linux 就自动展开长期路线。
+- **Agent 基础手写轨道**：简历机制讲不清或写不出时，先用 [linsist-agent](../../linsist-agent/SKILL.md) 的 [Agent Foundations](../../linsist-agent/references/curriculums/agent-foundations/syllabus.md)。只选用户简历相关的一项基础机制，再按摸底调整难度；不按设备或题库推断用户背景。
 - **Java 原生受控 Agent 与 Enterprise RAG 体系**：
-  先阅读 [项目口径差异](curriculums/java-agent-rag/alignment-notes.md)，区分当前项目、教学示例与长期计划。
-  直接加载并查阅官方精选路线 [`curriculums/java-agent-rag/syllabus.md`](curriculums/java-agent-rag/syllabus.md) 与架构快照 [`curriculums/java-agent-rag/projects-context.md`](curriculums/java-agent-rag/projects-context.md)。
+  仅在用户材料相关时使用；先阅读 [简历对齐检查表](curriculums/java-agent-rag/alignment-notes.md)，区分用户项目、教学示例与长期计划。
+  直接加载并查阅可选示例路线 [`curriculums/java-agent-rag/syllabus.md`](curriculums/java-agent-rag/syllabus.md) 与教学场景 [`curriculums/java-agent-rag/projects-context.md`](curriculums/java-agent-rag/projects-context.md)。
   涵盖从 FSM 状态机、Native Function Calling、HITL 二段确认，到 Dense+BM25 混合检索、RRF 融合与 Citation Validator 的 20 个硬核切片。
 - **自定义项目路线**：
   参考 [`curriculums/custom-template/my-project.template.md`](curriculums/custom-template/my-project.template.md) 接入个人或团队专属业务架构。

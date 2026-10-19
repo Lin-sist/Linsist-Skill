@@ -2,7 +2,7 @@
 
 只读取今天选中的一个编号，给任务时不要一次展示全表。函数位于技能 `assets/agent_lab.py` 的空实现；复制到获准的学习目录后独立填写。验收统一使用 `python3 "<技能目录>/assets/check_agent_lab.py" --exercise Axx --submission "<学习目录>/agent_lab.py"`。每个编号仅运行本题契约，初始空函数应失败。
 
-以下均为合成数据的独立实验，字段、状态和阈值是教学契约，不冒充 Flashback/RAG 的完整协议。返回字典只包含题目指定字段；需要异常时明确抛出 `ValueError`，不靠打印文本代替返回值。
+以下均为合成数据的独立实验，字段、状态和阈值是教学契约，不冒充用户项目的完整协议。用户简历未涉及的题目不自动安排。返回字典只包含题目指定字段；需要异常时明确抛出 `ValueError`，不靠打印文本代替返回值。
 
 ## A01：有界 Agent Loop（P0）
 
@@ -30,7 +30,7 @@
 - **签名**：`transition(state, event)`。
 - **迁移表**：IDLE/start→RUNNING；RUNNING/propose→WAITING_CONFIRMATION；WAITING_CONFIRMATION/approve→RUNNING；RUNNING/final→COMPLETED；RUNNING/timeout→FAILED。
 - **输出/边界**：返回目标状态；其余组合全部抛 ValueError，COMPLETED 与 FAILED 无出边。
-- **验收**：每个合法迁移与终态重启、IDLE 审批等非法迁移。这是通用教学 FSM，不是 Flashback 的真实阶段枚举；有状态机仍需步数、时间和失败边界。
+- **验收**：每个合法迁移与终态重启、IDLE 审批等非法迁移。这是通用教学 FSM，不是用户项目的真实阶段枚举；有状态机仍需步数、时间和失败边界。
 
 ## A05：上下文字符预算（P0）
 
@@ -65,7 +65,7 @@
 - **签名**：`rewrite_once(draft, rewrite)`；draft 包含 text、stage、error；rewrite 是离线回调。
 - **输出**：无 error 原样文本返回 `{"status":"completed","text":原文本,"rewrites":0}`。本题仅在非 CLOSING 的 MISSING_TIME_ATTRIBUTION 时允许一次回调，传入 draft 的副本并设置 tools_enabled=False；回调返回无 error 时 completed/新文本/1，否则 fallback/“无法可靠回答”/1。
 - **边界**：其他错误或 CLOSING 直接 fallback/固定文本/0；不得再次重写，不改原 draft。回调异常向上传递，不自动重试。
-- **验收**：合法纠正、再次失败、无错误、工具错误、收束阶段、工具关闭与输入未变。此题只练简历中的时间归属案例，当前工程的完整 typed 触发集合以代码为准。
+- **验收**：合法纠正、再次失败、无错误、工具错误、收束阶段、工具关闭与输入未变。时间归属只是本题选取的合成案例，不预设用户简历或项目具有相同的错误类型。
 
 ## A10：理解 MCP 下层的 RPC 分发（P1）
 

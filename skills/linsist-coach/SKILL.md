@@ -1,8 +1,8 @@
 ---
 name: linsist-coach
 description: >
-  Linsist Study Coach & Learning Orchestrator: Guides daily minimal learning loops, deep-dives into computer science & AI engineering (Agent/RAG), enforces spaced retrieval (48h retesting), and validates Feynman explanations.
-  Linsist 个人技术学习陪伴教练中枢：编排每日最小学习切片、深挖计算机基础与 AI 实战机制、执行 48h 间隔复测与面试表达验收。
+  Linsist learning coach for Agent roles, tailored to the user's own resume: minimal foundational coding practice, spaced retrieval, and interview explanations.
+  面向 Agent 岗位，依据用户自有简历编排基础学习、最小手写切片、48h 间隔复测与面试表达验收。
   Triggers: $linsist-coach, 用 Linsist 开始学习, 帮我复习, 每日学习. 用于学习陪练，不接管普通功能开发、故障修复或正式面试。
 ---
 
@@ -32,12 +32,14 @@ Linsist Coach 帮助学习者跨越“自以为看懂，实则无法脱稿讲清
 
 先按 [工作区接入指南](references/workspace.md) 处理首次初始化、配置与真实脚本路径；无需用户先手动配置画像即可开始学习。
 
+目标来自用户本场提供的简历、经历摘要及可选 JD，不预装任何个人简历、项目口径或学习日程。先匹配简历机制，再依据现场摸底选择一个基础缺口；示例课程不自动成为用户经历或必修路线。
+
 1. **读取学习画像**：
    首次启动时检查用户工作区是否存在 `.linsist/learner-profile.md`。若不存在，可按 [学习画像模板](references/learner-profile.template.md) 引导用户配置，或依据本轮实时沟通确定目标。
 2. **检查到期复测**：
    开场优先扫描 `.linsist/retest_dashboard.md`（或工作区笔记）中已到达 48 小时的错题。
    - 若有到期题目：直接发起单题闭卷复测，避免重复寒暄或重复询问“上次学到哪”。
-   - 若无到期复测：沿用上一轮确定的续学任务，或从 [选题指南](references/topics-guide.md) 与官方精选路线 [Java 原生 Agent + Enterprise RAG 课程包](references/curriculums/java-agent-rag/syllabus.md) 中提炼一个今日最小切片。
+   - 若无到期复测：沿用上一轮续学任务，或按用户简历与 [选题指南](references/topics-guide.md) 选择一个基础切片。仅当简历和目标相关时才使用 [可选 Java Agent/RAG 示例](references/curriculums/java-agent-rag/syllabus.md)，不默认加载整套示例。
 3. **建立今日共识**：
    用 2～3 句话明确：
    - 今天解决哪一个具体问题；
@@ -73,7 +75,7 @@ flowchart TD
 当学习者进入专项或垂直模块训练时，无缝协同以下专用 Skill，不重复摸底与建档：
 
 - **通用代码手写与算法基础**：调用 [linsist-basics](../linsist-basics/SKILL.md)。
-- **简历靶向 Agent 基础与离线手写**：调用 [linsist-agent](../linsist-agent/SKILL.md)。先练一个 Loop、工具调用或预算机制；不把 Linux 基础训练扩大为 Windows 侧项目重做。
+- **简历靶向 Agent 基础与离线手写**：调用 [linsist-agent](../linsist-agent/SKILL.md)。依据用户自有简历先练一个最小机制，不预设项目、编程语言或操作系统分工。
 - **Linux 机制推演与系统观测**：调用 [linsist-os](../linsist-os/SKILL.md)。
 - **真实测试断言与质量门禁**：调用 [linsist-testlab](../linsist-testlab/SKILL.md)。
 - **全真自适应模拟面试复盘**：调用 [linsist-interviewer](../linsist-interviewer/SKILL.md)。
